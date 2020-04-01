@@ -314,7 +314,7 @@
 ;
 (defrule donde_caeria
 	; primero comprobamos donde caeria
-	(declare (salience 10))
+	(declare (salience 50))
 	; me da igual el jugador
 	(Turno ?j)
 	(Tablero Juego ?f1 ?c ?v1)
@@ -516,8 +516,9 @@
 	; estamos en la misma fila
 	(test (and (= ?f2 ?f1) (= ?f3 ?f2) ))
 
-	(test (or (= ?c1 (+ ?c3 1)) (or (= ?c2 (+ ?c3 1)) (or (= ?c1 (- ?c3 1)) (= ?c2 (+ ?c3 1))  ) ) ))
-	(test (eq ?val _))
+	(test (or (= ?c1 (+ ?c3 1)) (or (= ?c2 (+ ?c3 1)) (or (= ?c1 (- ?c3 1)) (= ?c2 (- ?c3 1))  ) ) ))
+	;(test (eq ?val _))
+	(caeria ?f2 ?c3)
 	=>
 	(assert (ganaria ?j ?c3))
 )
@@ -530,8 +531,10 @@
 	; estamos en la misma columna
 	(test (and (= ?c2 ?c1) (= ?c3 ?c2) ))
 
-	(test (or (= ?f1 (+ ?f3 1)) (or (= ?f2 (+ ?f3 1)) (or (= ?f1 (- ?f3 1)) (= ?f2 (+ ?f3 1))  ) ) ))
-	(test (eq ?val _))
+	; aqui solo comprobamos si c3 + 1 = f1 o f2, ya que no podemos poner fichas por debajo
+	(test (or (= ?f1 (+ ?f3 1)) (= ?f2 (+ ?f3 1))  ) )
+	;(test (eq ?val _))
+	(caeria ?f3 ?c3)
 	=>
 	(assert (ganaria ?j ?c3))
 )
