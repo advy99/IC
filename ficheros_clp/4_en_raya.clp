@@ -353,9 +353,10 @@
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si estoy en la misma fila y si dos columnas son contiguas y sus valores son iguales
-	(test (and (= ?f1 ?f2) (and (= ?c1 (+ ?c2 1)) (and (eq ?v1 ?j) (eq ?v2 ?j) ) ) )  )
+	(test (and (= ?f1 ?f2) (and (= ?c1 (+ ?c2 1)) (eq ?v1 ?v2) ) )  )
+	(test (not (eq ?v1 _)))
 	=>
-	(assert (conectado_2 Juego h ?f1 ?c1 ?f2 ?c2 ?j))
+	(assert (conectado_2 Juego h ?f1 ?c1 ?f2 ?c2 ?v1))
 )
 
 (defrule comprobar_tengo_dos_linea_vertical
@@ -366,9 +367,10 @@
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si estoy en la misma fila y si dos columnas son contiguas y sus valores son iguales
-	(test (and (= ?c1 ?c2) (and (= ?f1 (+ ?f2 1)) (and (eq ?v1 ?j) (eq ?v2 ?j) ) ) )  )
+	(test (and (= ?c1 ?c2) (and (= ?f1 (+ ?f2 1)) (eq ?v1 ?v2) ) )  )
+	(test (not (eq ?v1 _)))
 	=>
-	(assert (conectado_2 Juego v ?f1 ?c1 ?f2 ?c2 ?j))
+	(assert (conectado_2 Juego v ?f1 ?c1 ?f2 ?c2 ?v1))
 )
 
 (defrule comprobar_tengo_dos_linea_diagonal_directa
@@ -379,27 +381,30 @@
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si es la fila siguiente, y la columna es una más abajo, formo diagonal directa
-	(test (and (= ?c1 (+ ?c2 1)) (and (= ?f1 (+ ?f2 1)) (and (eq ?v1 ?j) (eq ?v2 ?j) ) ) )  )
+	(test (and (= ?c1 (+ ?c2 1)) (and (= ?f1 (+ ?f2 1)) (eq ?v1 ?v2)  ) )  )
+	(test (not (eq ?v1 _)))
 	=>
-	(assert (conectado_2 Juego d1 ?f1 ?c1 ?f2 ?c2 ?j))
+	(assert (conectado_2 Juego d1 ?f1 ?c1 ?f2 ?c2 ?v1))
 )
 
 (defrule comprobar_tengo_dos_linea_diagonal_inversa
 	(declare (salience 9))
 
 	; me da igual quien tenga el turno
-	(Turno ?j)
+	(Turno ?j1)
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si la fila es la siguiente, y la columna es uno más arriba, es diagonal inversa
-	(test (and (= ?c1 (- ?c2 1)) (and (= ?f1 (+ ?f2 1)) (and (eq ?v1 ?j) (eq ?v2 ?j) ) ) )  )
+	(test (and (= ?c1 (- ?c2 1)) (and (= ?f1 (+ ?f2 1)) (eq ?v1 ?v2) ) )  )
+	; comprobamos que no es _
+	(test (not (eq ?v1 _)))
 	=>
-	(assert (conectado_2 Juego d2 ?f1 ?c1 ?f2 ?c2 ?j))
+	(assert (conectado_2 Juego d2 ?f1 ?c1 ?f2 ?c2 ?v1))
 )
 
 (defrule avisar_tengo_dos_linea
 	(declare (salience 2))
-	(Turno ?j)
+	(Turno ?j1)
 	(conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	=>
 	(printout t ?j " tiene dos fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
@@ -410,7 +415,7 @@
 ;
 (defrule comprobar_tengo_3_linea_horizontal
 	(declare (salience 8))
-	(Turno ?j)
+	(Turno ?j1)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en la misma fila
@@ -430,7 +435,7 @@
 
 (defrule comprobar_tengo_3_linea_vertical
 	(declare (salience 8))
-	(Turno ?j)
+	(Turno ?j1)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en la misma columna
@@ -450,7 +455,7 @@
 
 (defrule comprobar_tengo_3_linea_diagonal_principal
 	(declare (salience 8))
-	(Turno ?j)
+	(Turno ?j1)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en diagonal principal, y el intermedio es el mismo
@@ -471,7 +476,7 @@
 
 (defrule comprobar_tengo_3_linea_diagonal_inversa
 	(declare (salience 8))
-	(Turno ?j)
+	(Turno ?j1)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en diagonal principal, y el intermedio es el mismo
@@ -492,7 +497,7 @@
 
 (defrule avisar_tengo_tres_linea
 	(declare (salience 3))
-	(Turno ?j)
+	(Turno ?j1)
 	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	=>
 	(printout t ?j " tiene tres fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
@@ -505,20 +510,38 @@
 ;
 (defrule puedo_ganar_usando_3_linea_horizontal
 	(declare (salience 7))
-	(Turno ?j)
-	?x <- (3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
-
+	(Turno ?j1)
+	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+	(Tablero Juego ?f3 ?c3 ?val)
 	; estamos en la misma fila
-	(test (and (= ?f2 ?f1) (and  (= ?f3 ?f4) (= ?f2 ?f3) ) ))
+	(test (and (= ?f2 ?f1) (= ?f3 ?f2) ))
 
-	; son contiguas entre si horizontalmente
-	(test (and (= ?c1 (+ ?c2 1)) (= ?c3 (+ ?c4 1)  )))
-	; la intermedia es la misma
-	(test (= ?c2 ?c3))
+	(test (or (= ?c1 (+ ?c3 1)) (or (= ?c2 (+ ?c3 1)) (or (= ?c1 (- ?c3 1)) (= ?c2 (+ ?c3 1))  ) ) ))
+	(test (eq ?val _))
 	=>
-	(assert (3_en_linea Juego h ?f1 ?c1 ?f4 ?c4 ?j))
-	; si estan en 3 en raya ya sabemos que estan en 2 en raya, almacenar ese
-	; conocimiento es redundante
+	(assert (ganaria ?j ?c3))
+)
+
+(defrule puedo_ganar_usando_3_linea_vertical
+	(declare (salience 7))
+	(Turno ?j1)
+	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+	(Tablero Juego ?f3 ?c3 ?val)
+	; estamos en la misma columna
+	(test (and (= ?c2 ?c1) (= ?c3 ?c2) ))
+
+	(test (or (= ?f1 (+ ?f3 1)) (or (= ?f2 (+ ?f3 1)) (or (= ?f1 (- ?f3 1)) (= ?f2 (+ ?f3 1))  ) ) ))
+	(test (eq ?val _))
+	=>
+	(assert (ganaria ?j ?c3))
+)
+
+
+(defrule avisar_puedo_ganar
+	(declare (salience 3))
+	(Turno ?j1)
+	?x <- (ganaria ?j2 ?c)
+	=>
+	(printout t ?j2 " puede ganar si coloca en  " ?c   crlf)
 	(retract ?x)
-	(retract ?y)
 )
