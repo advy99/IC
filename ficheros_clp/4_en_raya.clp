@@ -523,6 +523,35 @@
 	(assert (ganaria ?j ?c3))
 )
 
+(defrule puedo_ganar_usando_2_linea_horizontal
+	(declare (salience 7))
+	(Turno ?j1)
+	(conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+	(Tablero Juego ?f3 ?c3 ?val1)
+	(Tablero Juego ?f4 ?c4 ?val2)
+	; estamos en la misma fila
+	(test (and (= ?f2 ?f1) (and (= ?f3 ?f2) (= ?f3 ?f4)) ))
+
+	; test la que esta puesta es del mismo valor que conectado_2
+	(test (eq ?j ?val2))
+
+	; comprobamos que estan alineadas
+	(test
+		; a un lado
+		(or
+			(and (= ?c3 (- ?c2 1)) (= ?c4 (- ?c3 1)) )
+
+		; y al otro
+			(and (= ?c3 (+ ?c1 1)) (= ?c4 (+ ?c3 1)) )
+		)
+	)
+
+	;(test (eq ?val _))
+	(caeria ?f3 ?c3)
+	=>
+	(assert (ganaria ?j ?c3))
+)
+
 (defrule puedo_ganar_usando_3_linea_vertical
 	(declare (salience 7))
 	(Turno ?j1)
@@ -539,6 +568,8 @@
 	(assert (ganaria ?j ?c3))
 )
 
+;en vertical solo puedes ganar si tienes 3, así que no es necesario hacer la regla de si
+; tienes dos
 
 (defrule avisar_puedo_ganar
 	(declare (salience 3))
