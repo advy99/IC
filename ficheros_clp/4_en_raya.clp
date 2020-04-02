@@ -287,6 +287,8 @@
 )
 
 
+
+
 ; EJERCICIO A1
 ;
 
@@ -308,6 +310,9 @@
 	=>
 	(printout t "No puede jugarse en : " ?c crlf)
 )
+
+
+
 
 
 ; EJERCICIO A2
@@ -341,6 +346,11 @@
 	; turno será distinto
 	(retract ?x)
 )
+
+
+
+
+
 
 
 ; EJERCICIO A3
@@ -409,6 +419,9 @@
 	=>
 	(printout t ?j " tiene dos fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
 )
+
+
+
 
 
 ; EJERCICIO A4
@@ -502,6 +515,8 @@
 	=>
 	(printout t ?j " tiene tres fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
 )
+
+
 
 
 
