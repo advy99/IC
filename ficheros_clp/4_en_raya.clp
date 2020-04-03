@@ -136,17 +136,6 @@
 (assert (Turno J) (Tablero Juego 7 ?c M))
 )
 
-;;;;;;;;;;; CLISP JUEGA SIN CRITERIO ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defrule clisp_juega_sin_criterio
-(declare (salience -9999))
-?f<- (Turno M)
-(Tablero Juego ?i ?c _)
-=>
-(printout t "JUEGO en la columna (sin criterio) " ?c crlf)
-(retract ?f)
-(assert (Juega M ?c))
-)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;  Comprobar si hay 4 en linea ;;;;;;;;;;;;;;;;;;;;;
 
@@ -293,23 +282,22 @@
 ;
 
 (defrule no_puede_jugarse_en
-	; me da igual que jugador
-	(Turno ?j)
+	(declare (salience 100))
+	(Turno M)
 	(Tablero Juego 1 ?c ?v)
 	(test (neq ?v _))
 	=>
 	(assert (no_puede_jugarse ?c))
 )
 
-(defrule avisar_no_puede_jugarse
-	; me da igual que jugador
-	(Turno ?j)
+;(defrule avisar_no_puede_jugarse
+;	(Turno M)
 	; este conocimiento no lo borramos, una vez se llena una columna, no se podrá
 	; jugar en toda la partida en esa columna
-	(no_puede_jugarse ?c)
-	=>
-	(printout t "No puede jugarse en : " ?c crlf)
-)
+;	(no_puede_jugarse ?c)
+;	=>
+;	(printout t "No puede jugarse en : " ?c crlf)
+;)
 
 
 
@@ -319,9 +307,8 @@
 ;
 (defrule donde_caeria
 	; primero comprobamos donde caeria
-	(declare (salience 50))
-	; me da igual el jugador
-	(Turno ?j)
+	(declare (salience 99))
+	(Turno M)
 	(Tablero Juego ?f1 ?c ?v1)
 	(Tablero Juego ?f2 ?c ?v2)
 	;comprobamos si no hay piezas en toda la columna o si la de debajo tiene pieza
@@ -334,18 +321,18 @@
 
 )
 
-(defrule avisar_donde_caeria
+;(defrule avisar_donde_caeria
 	; despuedes de comprobar donde caeria avisamos
-	(declare (salience 5))
+;	(declare (salience 5))
 	; me da igual el jugador
-	(Turno ?j)
-	?x <- (caeria ?f ?c)
-	=>
-	(printout t "Si ponemos en " ?c " caeria en " ?f crlf)
+;	(Turno M)
+;	?x <- (caeria ?f ?c)
+;	=>
+;	(printout t "Si ponemos en " ?c " caeria en " ?f crlf)
 	; una vez avisamos, lo quitamos de la base de conocimiento, en otro
 	; turno será distinto
-	(retract ?x)
-)
+;	(retract ?x)
+;)
 
 
 
@@ -356,10 +343,10 @@
 ; EJERCICIO A3
 ;
 (defrule comprobar_tengo_dos_linea_horizontal
-	(declare (salience 9))
+	(declare (salience 90))
 
 	; me da igual quien tenga el turno
-	(Turno ?j)
+	(Turno M)
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si estoy en la misma fila y si dos columnas son contiguas y sus valores son iguales
@@ -370,10 +357,10 @@
 )
 
 (defrule comprobar_tengo_dos_linea_vertical
-	(declare (salience 9))
+	(declare (salience 90))
 
 	; me da igual quien tenga el turno
-	(Turno ?j)
+	(Turno M)
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si estoy en la misma fila y si dos columnas son contiguas y sus valores son iguales
@@ -384,10 +371,10 @@
 )
 
 (defrule comprobar_tengo_dos_linea_diagonal_directa
-	(declare (salience 9))
+	(declare (salience 90))
 
 	; me da igual quien tenga el turno
-	(Turno ?j)
+	(Turno M)
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si es la fila siguiente, y la columna es una más abajo, formo diagonal directa
@@ -398,10 +385,10 @@
 )
 
 (defrule comprobar_tengo_dos_linea_diagonal_inversa
-	(declare (salience 9))
+	(declare (salience 90))
 
 	; me da igual quien tenga el turno
-	(Turno ?j1)
+	(Turno M)
 	(Tablero Juego ?f1 ?c1 ?v1)
 	(Tablero Juego ?f2 ?c2 ?v2)
 	; si la fila es la siguiente, y la columna es uno más arriba, es diagonal inversa
@@ -412,13 +399,13 @@
 	(assert (conectado_2 Juego d2 ?f1 ?c1 ?f2 ?c2 ?v1))
 )
 
-(defrule avisar_tengo_dos_linea
-	(declare (salience 2))
-	(Turno ?j1)
-	(conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
-	=>
-	(printout t ?j " tiene dos fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
-)
+;(defrule avisar_tengo_dos_linea
+;	(declare (salience 2))
+;	(Turno ?j1)
+;	(conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+;	=>
+;	(printout t ?j " tiene dos fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
+;)
 
 
 
@@ -427,8 +414,8 @@
 ; EJERCICIO A4
 ;
 (defrule comprobar_tengo_3_linea_horizontal
-	(declare (salience 8))
-	(Turno ?j1)
+	(declare (salience 80))
+	(Turno M)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en la misma fila
@@ -447,8 +434,8 @@
 )
 
 (defrule comprobar_tengo_3_linea_vertical
-	(declare (salience 8))
-	(Turno ?j1)
+	(declare (salience 80))
+	(Turno M)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en la misma columna
@@ -467,8 +454,8 @@
 )
 
 (defrule comprobar_tengo_3_linea_diagonal_principal
-	(declare (salience 8))
-	(Turno ?j1)
+	(declare (salience 80))
+	(Turno M)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en diagonal principal, y el intermedio es el mismo
@@ -488,8 +475,8 @@
 )
 
 (defrule comprobar_tengo_3_linea_diagonal_inversa
-	(declare (salience 8))
-	(Turno ?j1)
+	(declare (salience 80))
+	(Turno M)
 	?x <- (conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
 	?y <- (conectado_2 Juego ?forma ?f3 ?c3 ?f4 ?c4 ?j)
 	; estamos en diagonal principal, y el intermedio es el mismo
@@ -508,13 +495,13 @@
 	(retract ?y)
 )
 
-(defrule avisar_tengo_tres_linea
-	(declare (salience 3))
-	(Turno ?j1)
-	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
-	=>
-	(printout t ?j " tiene tres fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
-)
+;(defrule avisar_tengo_tres_linea
+;	(declare (salience 3))
+;	(Turno ?j1)
+;	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+;	=>
+;	(printout t ?j " tiene tres fichas conectadas de forma " ?forma " en " ?f1 "," ?c1 " y " ?f2 "," ?c2   crlf)
+;)
 
 
 
@@ -524,24 +511,38 @@
 ; EJERCICIO A5
 ;
 (defrule puedo_ganar_usando_3_linea_horizontal
-	(declare (salience 7))
-	(Turno ?j1)
-	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+	(declare (salience 70))
+	(Turno M)
+	(3_en_linea Juego h ?f1 ?c1 ?f2 ?c2 ?j)
 	(Tablero Juego ?f3 ?c3 ?val)
 	; estamos en la misma fila
 	(test (and (= ?f2 ?f1) (= ?f3 ?f2) ))
 
-	(test (or (= ?c1 (+ ?c3 1)) (or (= ?c2 (+ ?c3 1)) (or (= ?c1 (- ?c3 1)) (= ?c2 (- ?c3 1))  ) ) ))
+	; las columnas son contiguas
+	(test
+		(or
+			(= ?c1 (+ ?c3 1))
+			(or
+				(= ?c2 (+ ?c3 1))
+				(or
+					(= ?c1 (- ?c3 1))
+					(= ?c2 (- ?c3 1))
+				)
+			)
+		)
+	)
 	;(test (eq ?val _))
-	(caeria ?f2 ?c3)
+	(caeria ?f3 ?c3)
 	=>
+	(printout t ?j " ganaria de forma  h  jugando en " ?c3 crlf)
+
 	(assert (ganaria ?j ?c3))
 )
 
 (defrule puedo_ganar_usando_2_linea_horizontal
-	(declare (salience 7))
-	(Turno ?j1)
-	(conectado_2 Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+	(declare (salience 70))
+	(Turno M)
+	(conectado_2 Juego h ?f1 ?c1 ?f2 ?c2 ?j)
 	(Tablero Juego ?f3 ?c3 ?val1)
 	(Tablero Juego ?f4 ?c4 ?val2)
 	; estamos en la misma fila
@@ -564,13 +565,15 @@
 	;(test (eq ?val _))
 	(caeria ?f3 ?c3)
 	=>
+	(printout t ?j " ganaria de forma  h  jugando en " ?c3 crlf)
+
 	(assert (ganaria ?j ?c3))
 )
 
 (defrule puedo_ganar_usando_3_linea_vertical
-	(declare (salience 7))
-	(Turno ?j1)
-	(3_en_linea Juego ?forma ?f1 ?c1 ?f2 ?c2 ?j)
+	(declare (salience 70))
+	(Turno M)
+	(3_en_linea Juego v ?f1 ?c1 ?f2 ?c2 ?j)
 	(Tablero Juego ?f3 ?c3 ?val)
 	; estamos en la misma columna
 	(test (and (= ?c2 ?c1) (= ?c3 ?c2) ))
@@ -580,17 +583,122 @@
 	;(test (eq ?val _))
 	(caeria ?f3 ?c3)
 	=>
+	(printout t ?j " ganaria de forma  v  jugando en " ?c3 crlf)
+
 	(assert (ganaria ?j ?c3))
+)
+
+(defrule puedo_ganar_usando_3_linea_diagonal_principal
+	(declare (salience 70))
+	(Turno M)
+	(3_en_linea Juego d1 ?f1 ?c1 ?f2 ?c2 ?j)
+	(Tablero Juego ?f3 ?c3 ?val)
+	(caeria ?f3 ?c3)
+
+	; las filas están en diagonal si ni las filas ni las columnas son iguales
+
+	(test
+		(or
+			(and (= ?f3 (+ ?f1 1)) (= ?c3 (+ ?c1 1)) )
+			(and (= ?f3 (- ?f2 1)) (= ?c3 (- ?c2 1)) )
+		)
+	)
+
+	=>
+	(printout t ?j " ganaria de forma d1  jugando en " ?c3 crlf)
+
+	(assert (ganaria ?j ?c3))
+
+)
+
+(defrule puedo_ganar_usando_3_linea_diagonal_inversa
+	(declare (salience 70))
+	(Turno M)
+	(3_en_linea Juego d2 ?f1 ?c1 ?f2 ?c2 ?j)
+	(Tablero Juego ?f3 ?c3 ?val)
+	(caeria ?f3 ?c3)
+
+	; las filas están en diagonal si ni las filas ni las columnas son iguales
+
+	(test
+		(or
+			(and (= ?f3 (+ ?f1 1)) (= ?c3 (- ?c1 1)) )
+			(and (= ?f3 (- ?f2 1)) (= ?c3 (+ ?c2 1)) )
+		)
+	)
+
+	=>
+	(printout t ?j " ganaria de forma d2  jugando en " ?c3 crlf)
+	(assert (ganaria ?j ?c3))
+
 )
 
 ;en vertical solo puedes ganar si tienes 3, así que no es necesario hacer la regla de si
 ; tienes dos
 
-(defrule avisar_puedo_ganar
-	(declare (salience 3))
-	(Turno ?j1)
-	?x <- (ganaria ?j2 ?c)
+;(defrule avisar_puedo_ganar
+;	(declare (salience 3))
+;	(Turno ?j1)
+;	?x <- (ganaria ?j2 ?c)
+;	=>
+;	(printout t ?j2 " puede ganar si coloca en  " ?c   crlf)
+;	(retract ?x)
+;)
+
+
+; para que implemente como jugariamos
+
+(defrule M_juega_ganar
+	(declare (salience 50))
+	(Turno M)
+	(ganaria M ?c)
+	(not (Juega M ?x))
 	=>
-	(printout t ?j2 " puede ganar si coloca en  " ?c   crlf)
+	(printout t "JUEGO en la columna " ?c crlf)
+	(assert (Juega M ?c))
+)
+
+(defrule M_juega_no_perder
+	(declare (salience 49))
+	(Turno M)
+	(ganaria J ?c)
+	(not (Juega M ?x))
+	=>
+	(printout t "JUEGO en la columna " ?c crlf)
+	(assert (Juega M ?c))
+)
+
+
+(defrule limpiar_ganaria
+	(declare (salience 10))
+	(Turno M)
+	?x <- (ganaria ?j ?c)
+	=>
+	(retract ?x)
+)
+
+(defrule limpiar_caeria
+	(declare (salience 10))
+	(Turno M)
+	?x <- (caeria ?f ?c)
+	=>
+	(retract ?x)
+)
+
+;;;;;;;;;;; CLISP JUEGA SIN CRITERIO ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defrule clisp_juega_sin_criterio
+	(declare (salience 11))
+	(Turno M)
+	(Tablero Juego ?i ?c _)
+	(not (Juega M ?x))
+	=>
+	(printout t "JUEGO en la columna (sin criterio) " ?c crlf)
+	(assert (Juega M ?c))
+)
+
+(defrule pasar_turno
+	(declare (salience 5))
+	?x <-(Turno M)
+	=>
 	(retract ?x)
 )
