@@ -646,8 +646,94 @@
 ;)
 
 
+
+; extras que uso para aplicar como juego yo
+
+(defrule puede_hacer_3_linea_h
+	(declare (salience 60))
+	(Turno M)
+	(conectado_2 Juego h ?f1 ?c1 ?f2 ?c2 ?j)
+	(caeria ?f1 ?val1)
+	(test
+		(or
+			(= ?val1 (+ ?c1 1))
+			(or
+				(= ?val1 (+ ?c2 1))
+				(or
+					(= ?val1 (- ?c1 1))
+					(= ?val1 (- ?c2 1))
+				)
+			)
+
+		)
+	)
+	=>
+	(assert (puede_3 h ?f1 ?val1 ?j))
+
+)
+
+
+
+(defrule puede_hacer_3_linea_v
+	(declare (salience 60))
+	(Turno M)
+	(conectado_2 Juego v ?f1 ?c1 ?f2 ?c1 ?j)
+	(caeria ?f3 ?c1)
+	(test
+		(or
+			(= ?f3 (- ?f1 1))
+			(= ?f3 (- ?f2 1))
+		)
+	)
+	=>
+	(assert (puede_3 v ?f3 ?c1 ?j))
+
+)
+
+(defrule puede_hacer_3_linea_d1
+	(declare (salience 60))
+	(Turno M)
+	(conectado_2 Juego d1 ?f1 ?c1 ?f2 ?c2 ?j)
+	(caeria ?f3 ?c3)
+	(test
+		(or
+			(and (= ?f3 (+ ?f1 1)) (= ?c3 (+ ?c1 1)) )
+			(and (= ?f3 (- ?f2 1)) (= ?c3 (- ?c2 1)) )
+		)
+	)
+	=>
+	(assert (puede_3 d1 ?f3 ?c3 ?j))
+
+)
+
+(defrule puede_hacer_3_linea_d2
+	(declare (salience 60))
+	(Turno M)
+	(conectado_2 Juego d1 ?f1 ?c1 ?f2 ?c2 ?j)
+	(caeria ?f3 ?c3)
+	(test
+		(or
+			(and (= ?f3 (+ ?f1 1)) (= ?c3 (- ?c1 1)) )
+			(and (= ?f3 (- ?f2 1)) (= ?c3 (+ ?c2 1)) )
+		)
+	)
+	=>
+	(assert (puede_3 d2 ?f3 ?c3 ?j))
+
+)
+
+
+
+
+
+
+
+
+
+
 ; para que implemente como jugariamos
 
+; primero juega a ganar (es su turno, así que ganaria automaticamente)
 (defrule M_juega_ganar
 	(declare (salience 50))
 	(Turno M)
@@ -658,7 +744,8 @@
 	(assert (Juega M ?c))
 )
 
-(defrule M_juega_no_perder
+; si no puede ganar, juega a que el otro no gane
+(defrule M_juega_J_no_gane
 	(declare (salience 49))
 	(Turno M)
 	(ganaria J ?c)
@@ -668,6 +755,67 @@
 	(assert (Juega M ?c))
 )
 
+
+; si no puede ganar ni el contrario ganar, evitamos que el contrario pueda hacer 3 en linea
+(defrule M_juega_J_no_tenga_3
+	(declare (salience 48))
+	(Turno M)
+	(puede_3 ?forma ?f ?c J)
+	(not (Juega M ?x))
+	=>
+	(printout t "JUEGO en la columna " ?c crlf)
+	(assert (Juega M ?c))
+)
+
+; si el contrario no puede unir 3, intentamos unirlas nosotro
+(defrule M_juega_tener_3
+	(declare (salience 47))
+	(Turno M)
+	(puede_3 ?forma ?f ?c M)
+	(not (Juega M ?x))
+	=>
+	(printout t "JUEGO en la columna " ?c crlf)
+	(assert (Juega M ?c))
+)
+
+
+; en caso de que no podamos hacer nada de lo anterior, intentamos dominar el centro
+
+(defrule intenta_dominar_centro
+	(declare (salience 12))
+	(Turno M)
+	(caeria ?f ?c)
+	(test
+		; intentamos dominar las columnas 3, 4 y 5
+		(and
+			(> ?c 2)
+			(< ?c 6)
+		)
+	)
+	(not (Juega M ?x))
+	=>
+	(printout t "JUEGO en la columna " ?c crlf)
+	(assert (Juega M ?c))
+
+
+)
+
+
+;;;;;;;;;;; CLISP JUEGA SIN CRITERIO modificado a como gestiono el limpiar hechos
+; y pasar de turno
+(defrule clisp_juega_sin_criterio
+	(declare (salience 11))
+	(Turno M)
+	(Tablero Juego ?i ?c _)
+	(not (Juega M ?x))
+	=>
+	(printout t "JUEGO en la columna (sin criterio) " ?c crlf)
+	(assert (Juega M ?c))
+)
+
+
+
+; reglas para limpiar hechos que pueden variar cada turno
 
 (defrule limpiar_ganaria
 	(declare (salience 10))
@@ -685,16 +833,9 @@
 	(retract ?x)
 )
 
-;;;;;;;;;;; CLISP JUEGA SIN CRITERIO ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defrule clisp_juega_sin_criterio
-	(declare (salience 11))
-	(Turno M)
-	(Tablero Juego ?i ?c _)
-	(not (Juega M ?x))
-	=>
-	(printout t "JUEGO en la columna (sin criterio) " ?c crlf)
-	(assert (Juega M ?c))
-)
+
+; una vez limpio, paso de turno (Juega M ya está en la base de hechos, pero tiene
+; menos prioridad que los hechos de Turno M, así que elimino Turno M)
 
 (defrule pasar_turno
 	(declare (salience 5))
