@@ -478,7 +478,7 @@
 		)
 	)
 	=>
-	(assert (consejo is te_gustan_mates_y_programar Antonio))
+	(assert (consejo is te_gusta_programar Antonio))
 )
 
 
@@ -503,7 +503,7 @@
 		)
 	)
 	=>
-	(assert (consejo ic te_gustan_mates_y_programar Antonio))
+	(assert (consejo ic te_gusta_el_hardware_y_eres_trabajador Antonio))
 )
 
 
@@ -528,7 +528,7 @@
 		)
 	)
 	=>
-	(assert (consejo si te_gustan_mates_y_programar Antonio))
+	(assert (consejo si te_gusta_programar_y_quieres_trabajar_en_una_empresa Antonio))
 )
 
 
@@ -554,9 +554,8 @@
 		)
 	)
 	=>
-	(assert (consejo ti te_gustan_mates_y_programar Antonio))
+	(assert (consejo ti no_te_gusta_ni_programar_ni_hardware_ni_matematicas Antonio))
 )
-
 
 
 
