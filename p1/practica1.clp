@@ -29,7 +29,7 @@
 
 
 
-
+; ramas posibles
 (deffacts Ramas
 	(Rama Computacion_y_Sistemas_Inteligentes)
 	(Rama Ingenieria_del_Software)
@@ -38,143 +38,436 @@
 	(Rama Tecnologias_de_la_Informacion)
 )
 
-(defrule comienzo_preguntar_mates
-	(declare (salience -9990))
-	(not (gusta matematicas ?val))
-	(not (consejo ?rama ?motivo))
+(deffacts puntuaciones_CSI
+	; puntuacion_csies para cada pregunta
+	(puntuacion csi gusta_matematicas me_encanta 50) ; para CSI o IS
+	(puntuacion csi gusta_matematicas lo_soporto 25) ; IS o CSI
+	(puntuacion csi gusta_matematicas lo_odio -70) ; ramas sin matemáticas: IC, TI o SI
+	(puntuacion csi gusta_matematicas no_se 0) ; no se que hacer
+
+	(puntuacion csi gusta_programar me_encanta 30)
+	(puntuacion csi gusta_programar lo_soporto 15)
+	(puntuacion csi gusta_programar lo_odio -30)
+	(puntuacion csi gusta_programar no_se 0)
+
+	(puntuacion csi gusta_hardware me_encanta -30)
+	(puntuacion csi gusta_hardware lo_soporto 0)
+	(puntuacion csi gusta_hardware lo_odio 30)
+	(puntuacion csi gusta_hardware no_se 0)
+
+	(puntuacion csi nota_media alta 10)
+	(puntuacion csi nota_media media 5)
+	(puntuacion csi nota_media baja 0)
+	(puntuacion csi nota_media no_quiero_contestar 0)
+
+	(puntuacion csi gustaria_trabajar docencia 10)
+	(puntuacion csi gustaria_trabajar investigacion 20)
+	(puntuacion csi gustaria_trabajar empresa_privada 15)
+	(puntuacion csi gustaria_trabajar empresa_publica 15)
+	(puntuacion csi gustaria_trabajar no_quiero_contestar 0)
+
+	(puntuacion csi trabajador mucho 15)
+	(puntuacion csi trabajador algo 5)
+	(puntuacion csi trabajador nada -10)
+	(puntuacion csi trabajador no_quiero_contestar 0)
+)
+
+(deffacts puntuaciones_IS
+	; puntuacion_is para cada pregunta
+	(puntuacion is gusta_matematicas me_encanta -30)
+	(puntuacion is gusta_matematicas lo_soporto 25)
+	(puntuacion is gusta_matematicas lo_odio 50)
+	(puntuacion is gusta_matematicas no_se 0)
+
+	(puntuacion is gusta_programar me_encanta 70)
+	(puntuacion is gusta_programar lo_soporto 40)
+	(puntuacion is gusta_programar lo_odio -70)
+	(puntuacion is gusta_programar no_se 0)
+
+	(puntuacion is gusta_hardware me_encanta -30)
+	(puntuacion is gusta_hardware lo_soporto 0)
+	(puntuacion is gusta_hardware lo_odio 30)
+	(puntuacion is gusta_hardware no_se 0)
+
+	(puntuacion is nota_media alta 20)
+	(puntuacion is nota_media media 20)
+	(puntuacion is nota_media baja 10)
+	(puntuacion is nota_media no_quiero_contestar 0)
+
+	(puntuacion is gustaria_trabajar docencia 40)
+	(puntuacion is gustaria_trabajar investigacion 30)
+	(puntuacion is gustaria_trabajar empresa_privada 20)
+	(puntuacion is gustaria_trabajar empresa_publica 30)
+	(puntuacion is gustaria_trabajar no_quiero_contestar 0)
+
+	(puntuacion is trabajador mucho 30)
+	(puntuacion is trabajador algo 10)
+	(puntuacion is trabajador nada -20)
+	(puntuacion is trabajador no_quiero_contestar 0)
+)
+
+(deffacts puntuaciones_IC
+	; puntuacion_csies para cada pregunta
+	(puntuacion ic gusta_matematicas me_encanta 20) ; para CSI o IS
+	(puntuacion ic gusta_matematicas lo_soporto 10) ; IS o CSI
+	(puntuacion ic gusta_matematicas lo_odio -10) ; ramas sin matemáticas: IC, TI o SI
+	(puntuacion ic gusta_matematicas no_se 0) ; no se que hacer
+
+	(puntuacion ic gusta_programar me_encanta 30)
+	(puntuacion ic gusta_programar lo_soporto 15)
+	(puntuacion ic gusta_programar lo_odio -10)
+	(puntuacion ic gusta_programar no_se 0)
+
+	(puntuacion ic gusta_hardware me_encanta 80)
+	(puntuacion ic gusta_hardware lo_soporto 40)
+	(puntuacion ic gusta_hardware lo_odio -70)
+	(puntuacion ic gusta_hardware no_se 0)
+
+	(puntuacion ic nota_media alta 40)
+	(puntuacion ic nota_media media 30)
+	(puntuacion ic nota_media baja 10)
+	(puntuacion ic nota_media no_quiero_contestar 0)
+
+	(puntuacion ic gustaria_trabajar docencia 30)
+	(puntuacion ic gustaria_trabajar investigacion 20)
+	(puntuacion ic gustaria_trabajar empresa_privada 40)
+	(puntuacion ic gustaria_trabajar empresa_publica 20)
+	(puntuacion ic gustaria_trabajar no_quiero_contestar 0)
+
+	(puntuacion ic trabajador mucho 30)
+	(puntuacion ic trabajador algo 10)
+	(puntuacion ic trabajador nada -10)
+	(puntuacion ic trabajador no_quiero_contestar 0)
+)
+
+(deffacts puntuaciones_TI
+	; puntuacion_csies para cada pregunta
+	(puntuacion ti gusta_matematicas me_encanta -60) ; para CSI o IS
+	(puntuacion ti gusta_matematicas lo_soporto -30) ; IS o CSI
+	(puntuacion ti gusta_matematicas lo_odio 30) ; ramas sin matemáticas: IC, TI o SI
+	(puntuacion ti gusta_matematicas no_se 0) ; no se que hacer
+
+	(puntuacion ti gusta_programar me_encanta -30)
+	(puntuacion ti gusta_programar lo_soporto 10)
+	(puntuacion ti gusta_programar lo_odio 30)
+	(puntuacion ti gusta_programar no_se 0)
+
+	(puntuacion ti gusta_hardware me_encanta -10)
+	(puntuacion ti gusta_hardware lo_soporto 10)
+	(puntuacion ti gusta_hardware lo_odio 15)
+	(puntuacion ti gusta_hardware no_se 0)
+
+	(puntuacion ti nota_media alta 5)
+	(puntuacion ti nota_media media 20)
+	(puntuacion ti nota_media baja 20)
+	(puntuacion ti nota_media no_quiero_contestar 0)
+
+	(puntuacion ti gustaria_trabajar docencia 20)
+	(puntuacion ti gustaria_trabajar investigacion 30)
+	(puntuacion ti gustaria_trabajar empresa_privada 40)
+	(puntuacion ti gustaria_trabajar empresa_publica 40)
+	(puntuacion ti gustaria_trabajar no_quiero_contestar 0)
+
+	(puntuacion ti trabajador mucho 20)
+	(puntuacion ti trabajador algo 20)
+	(puntuacion ti trabajador nada 10)
+	(puntuacion ti trabajador no_quiero_contestar 0)
+)
+
+(deffacts puntuaciones_SI
+	; puntuacion_sies para cada pregunta
+	(puntuacion si gusta_matematicas me_encanta -40) ; para CSI o IS
+	(puntuacion si gusta_matematicas lo_soporto -20) ; IS o CSI
+	(puntuacion si gusta_matematicas lo_odio 20) ; ramas sin matemáticas: IC, TI o SI
+	(puntuacion si gusta_matematicas no_se 0) ; no se que hacer
+
+	(puntuacion si gusta_programar me_encanta 50)
+	(puntuacion si gusta_programar lo_soporto 25)
+	(puntuacion si gusta_programar lo_odio 10)
+	(puntuacion si gusta_programar no_se 0)
+
+	(puntuacion si gusta_hardware me_encanta 5)
+	(puntuacion si gusta_hardware lo_soporto 10)
+	(puntuacion si gusta_hardware lo_odio 15)
+	(puntuacion si gusta_hardware no_se 0)
+
+	(puntuacion si nota_media alta 10)
+	(puntuacion si nota_media media 30)
+	(puntuacion si nota_media baja 20)
+	(puntuacion si nota_media no_quiero_contestar 0)
+
+	(puntuacion si gustaria_trabajar docencia 20)
+	(puntuacion si gustaria_trabajar investigacion 30)
+	(puntuacion si gustaria_trabajar empresa_privada 40)
+	(puntuacion si gustaria_trabajar empresa_publica 30)
+	(puntuacion si gustaria_trabajar no_quiero_contestar 0)
+
+	(puntuacion si trabajador mucho 30)
+	(puntuacion si trabajador algo 20)
+	(puntuacion si trabajador nada 10)
+	(puntuacion si trabajador no_quiero_contestar 0)
+)
+
+
+
+(defrule inicio
+	(declare (salience 9999))
+	(not (comienzo))
+	(not (ya_he_aconsejado))
 	=>
-	(printout t "¿Te gustan las matemáticas?[si/no]" crlf)
+	(assert
+		(comienzo)
+		(recomendacion csi 0)
+		(recomendacion is 0)
+		(recomendacion ic 0)
+		(recomendacion ti 0)
+		(recomendacion si 0)
+	)
+)
+
+
+; preguntas para obtener el conocimiento
+(defrule preguntar_mates
+	(declare (salience -9990))
+	(not (ya_he_aconsejado))
+	(not (gusta matematicas ?val))
+	(not (ha_respondido_todo))
+	=>
+	(printout t "¿Te gustan las matemáticas?[me_encanta/lo_soporto/lo_odio/no_se]" crlf)
 	(assert (gusta matematicas (read)))
 )
 
 
 (defrule preguntar_hardware
 	(declare (salience -9991))
+	(not (ya_he_aconsejado))
 	(not (gusta hardware ?val))
-	(not (consejo ?rama ?motivo ?apodo))
+	(not (ha_respondido_todo))
 	=>
-	(printout t "¿Te gusta el hardware?[si/no]" crlf)
+	(printout t "¿Te gusta el hardware?[me_encanta/lo_soporto/lo_odio/no_se]" crlf)
 	(assert (gusta hardware (read)))
 )
 
 (defrule preguntar_programar
 	(declare (salience -9992))
+	(not (ya_he_aconsejado))
 	(not (gusta programar ?val))
-	(not (consejo ?rama ?motivo ?apodo))
+	(not (ha_respondido_todo))
 	=>
-	(printout t "¿Te gusta programar?[si/no]" crlf)
+	(printout t "¿Te gusta programar?[me_encanta/lo_soporto/lo_odio/no_se]" crlf)
 	(assert (gusta programar (read)))
 )
 
-(defrule preguntar_trabajo
-	(declare (salience -9997))
-	(not (trabajaria_en ?val))
-	(not (consejo ?rama ?motivo ?apodo))
+(defrule preguntar_nota
+	(declare (salience -9993))
+	(not (ya_he_aconsejado))
+	(not (nota ?val))
+	(not (ha_respondido_todo))
 	=>
-	(printout t "¿En que te gustaría trabajar?[docencia/empresa_privada/empresa_publica]" crlf)
+	(printout t "¿Cuál es tu nota media?[alta/media/baja/no_quiero_contestar]" crlf)
+	(assert (nota (read)))
+)
+
+(defrule preguntar_trabajo
+	(declare (salience -9994))
+	(not (ya_he_aconsejado))
+	(not (trabajaria_en ?val))
+	(not (ha_respondido_todo))
+	=>
+	(printout t "¿En que te gustaría trabajar?[docencia/investigacion/empresa_privada/empresa_publica/no_quiero_contestar]" crlf)
 	(assert (trabajaria_en (read)))
 )
 
 
+(defrule preguntar_es_trabajador
+	(declare (salience -9995))
+	(not (ya_he_aconsejado))
+	(not (es_trabajador ?val))
+	(not (ha_respondido_todo))
+	=>
+	(printout t "¿Eres trabajador/a?[mucho/algo/nada/no_quiero_contestar]" crlf)
+	(assert (es_trabajador (read)))
+)
 
 
 
+
+; comprobacion de las entradas
 (defrule comprobar_entrada_gusta
 	(declare (salience 9999))
+	(not (ya_he_aconsejado))
 	?x <- (gusta ?algo ?valor)
-	(test (and (neq ?valor si) (neq ?valor no) ))
+	(test (and (neq ?valor me_encanta) (and (neq ?valor lo_soporto) (and (neq ?valor lo_odio) (neq ?valor no_se)) ) ))
 	=>
-	(printout t "Por favor responde si o no" crlf)
+	(printout t "Por favor responde me_encanta, lo_soporto, lo_odio o no_se" crlf)
 	(retract ?x)
 )
 
 (defrule comprobar_entrada_trabajo
 	(declare (salience 9999))
+	(not (ya_he_aconsejado))
 	?x <- (trabajaria_en ?valor)
-	(test (and (neq ?valor docencia) (and  (neq ?valor empresa_publica)  (neq ?valor empresa_privada )) ))
+	(test (and (neq ?valor docencia) (and  (neq ?valor empresa_publica) (and (neq ?valor empresa_privada ) (and (neq ?valor investigacion ) (neq ?valor no_quiero_contestar) ) ) ) ))
 	=>
 	(printout t "Por favor responde docencia, empresa_privada o empresa_publica" crlf)
 	(retract ?x)
 )
 
-
-(defrule aconsejor_csi
-	(declare (salience 9991))
-	(gusta matematicas si)
+(defrule comprobar_entrada_nota
+	(declare (salience 9999))
+	(not (ya_he_aconsejado))
+	?x <- (nota ?valor)
+	(test (and (neq ?valor alta) (and  (neq ?valor media) (and (neq ?valor baja ) (neq ?valor no_quiero_contestar )  ) ) ))
 	=>
-	(assert
-		(consejo Computacion_y_Sistemas_Inteligentes te_gustan_matematicas Antonio)
-	)
-
+	(printout t "Por favor responde anta, media, baja o no_quiero_contestar" crlf)
+	(retract ?x)
 )
 
-(defrule aconsejar_ic
-	(declare (salience 9991))
-	(gusta matematicas no)
-	(gusta hardware si)
-	(gusta programar no)
+(defrule comprobar_entrada_trabajador
+	(declare (salience 9999))
+	(not (ya_he_aconsejado))
+	?x <- (es_trabajador ?valor)
+	(test (and (neq ?valor mucho) (and  (neq ?valor algo) (and (neq ?valor nada ) (neq ?valor no_quiero_contestar )  ) ) ))
 	=>
-	(assert
-		(consejo Ingenieria_de_Computadores te_gusta_hardware Antonio)
-	)
-)
-
-(defrule aconsejar_is_hardware
-	(declare (salience 9991))
-	(gusta matematicas no)
-	(gusta hardware si)
-	(gusta programar si)
-	=>
-	(assert
-		(consejo Ingenieria_del_Software te_gusta_programar Antonio)
-	)
-)
-
-(defrule aconsejar_is_docencia
-	(declare (salience 9991))
-	(gusta matematicas no)
-	(gusta hardware no)
-	(gusta programar si)
-	(or
-		(trabajaria_en docencia)
-		(trabajaria_en empresa_publica)
-	)
-	=>
-	(assert
-		(consejo Ingenieria_del_Software te_gusta_programar Antonio)
-	)
-)
-
-(defrule aconsejar_si
-	(declare (salience 9991))
-	(gusta matematicas no)
-	(gusta hardware no)
-	(gusta programar si)
-	(trabajaria_en empresa_privada)
-	=>
-	(assert
-		(consejo Sistemas_de_Informacion te_gustaria_trabajar_en_empresa Antonio)
-	)
+	(printout t "Por favor responde mucho, algo, nada o no_quiero_contestar" crlf)
+	(retract ?x)
 )
 
 
-(defrule aconsejar_ti
-	(declare (salience 9991))
-	(gusta matematicas no)
-	(gusta hardware no)
-	(gusta programar no)
+; comprobamos si tenemos todo el conocimiento
+(defrule comprobar_ha_respondido_todo
+	(declare (salience 9980))
+	(not (ha_respondido_todo))
+	(es_trabajador ?val)
+	(nota ?n)
+	(gusta matematicas ?x)
+	(gusta hardware ?x1)
+	(gusta programar ?x2)
+	(trabajaria_en ?x3)
 	=>
+	(assert (ha_respondido_todo))
+)
+
+
+(defrule puntuar_mates
+	(declare (salience 8000))
+	(gusta matematicas ?val)
+	?x <- (recomendacion ?rama ?puntuacion)
+	(puntuacion ?rama gusta_matematicas ?valor)
+	(not (he_puntuado_mates ?rama))
+	=>
+	(retract ?x)
 	(assert
-		(consejo Tecnologias_de_la_Informacion no_te_gustarian_otras_ramas Antonio)
+		(recomendacion ?rama (+ ?puntuacion ?valor))
+		(he_puntuado_mates ?rama)
 	)
+)
+
+(defrule puntuar_programar
+	(declare (salience 8000))
+	(gusta programar ?val)
+	?x <- (recomendacion ?rama ?puntuacion)
+	(puntuacion ?rama gusta_programar ?val ?valor)
+	(not (he_puntuado_programar ?rama))
+	=>
+	(retract ?x)
+	(assert
+		(recomendacion ?rama (+ ?puntuacion ?valor))
+		(he_puntuado_programar ?rama)
+	)
+)
+
+(defrule puntuar_hardware
+	(declare (salience 8000))
+	(gusta hardware ?val)
+	?x <- (recomendacion ?rama ?puntuacion)
+	(puntuacion ?rama gusta_hardware ?val ?valor)
+	(not (he_puntuado_hardware ?rama))
+	=>
+	(retract ?x)
+	(assert
+		(recomendacion ?rama (+ ?puntuacion ?valor))
+		(he_puntuado_hardware ?rama)
+	)
+)
+
+(defrule puntuar_nota
+	(declare (salience 8000))
+	(nota ?val)
+	?x <- (recomendacion ?rama ?puntuacion)
+	(puntuacion ?rama nota_media ?val ?valor)
+	(not (he_puntuado_nota ?rama))
+	=>
+	(retract ?x)
+	(assert
+		(recomendacion ?rama (+ ?puntuacion ?valor))
+		(he_puntuado_nota ?rama)
+	)
+)
+
+(defrule puntuar_trabajador
+	(declare (salience 8000))
+	(es_trabajador ?val)
+	?x <- (recomendacion ?rama ?puntuacion)
+	(puntuacion ?rama trabajador ?val ?valor)
+	(not (he_puntuado_trabajador ?rama))
+	=>
+	(retract ?x)
+	(assert
+		(recomendacion ?rama (+ ?puntuacion ?valor))
+		(he_puntuado_trabajador ?rama)
+	)
+)
+
+(defrule puntuar_trabajo
+	(declare (salience 8000))
+	(trabajaria_en ?val)
+	?x <- (recomendacion ?rama ?puntuacion)
+	(puntuacion ?rama gustaria_trabajar ?val ?valor)
+	(not (he_puntuado_trabajo ?rama))
+	=>
+	(retract ?x)
+	(assert
+		(recomendacion ?rama (+ ?puntuacion ?valor))
+		(he_puntuado_trabajo ?rama)
+	)
+)
+
+(defrule recomendar_ha_respondido_todo
+	(ha_respondido_todo)
+	(not (ya_he_aconsejado))
+	(recomendacion ?r1 ?val_r1)
+	(recomendacion ?r2 ?val_r2)
+	(recomendacion ?r3 ?val_r3)
+	(recomendacion ?r4 ?val_r4)
+	(recomendacion ?r5 ?val_r5)
+	(test
+		(and
+			(> ?val_r1 ?val_r2)
+			(and
+				(> ?val_r1 ?val_r3)
+				(and
+					(> ?val_r1 ?val_r4)
+					(> ?val_r1 ?val_r5)
+				)
+			)
+		)
+	)
+	=>
+	(assert (consejo ?r1 te_gustan_mates_y_programar Antonio))
+
 )
 
 
 
-(defrule aconsejar_rama
+(defrule mostrar_rama_aconsejada
 	(declare (salience 9990))
+	(not (ya_he_aconsejado))
 	(consejo ?rama ?motivo ?apodo)
 	=>
 	(printout t "El experto " ?apodo " te aconseja escoger la rama " ?rama " ya que " ?motivo crlf)
+	(assert
+		(ya_he_aconsejado)
+	)
 
 )
