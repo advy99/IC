@@ -40,53 +40,53 @@
 
 (deffacts puntuaciones_CSI
 	; puntuacion_csies para cada pregunta
-	(puntuacion csi gusta_matematicas me_encanta 50) ; para CSI o IS
-	(puntuacion csi gusta_matematicas lo_soporto 25) ; IS o CSI
-	(puntuacion csi gusta_matematicas lo_odio -70) ; ramas sin matemáticas: IC, TI o SI
-	(puntuacion csi gusta_matematicas no_se 0) ; no se que hacer
+	(puntuacion csi gusta_matematicas me_encanta 100)
+	(puntuacion csi gusta_matematicas lo_soporto 30)
+	(puntuacion csi gusta_matematicas lo_odio -100)
+	(puntuacion csi gusta_matematicas no_se 0)
 
-	(puntuacion csi gusta_programar me_encanta 30)
-	(puntuacion csi gusta_programar lo_soporto 15)
+	(puntuacion csi gusta_programar me_encanta 50)
+	(puntuacion csi gusta_programar lo_soporto 30)
 	(puntuacion csi gusta_programar lo_odio -30)
 	(puntuacion csi gusta_programar no_se 0)
 
-	(puntuacion csi gusta_hardware me_encanta -30)
-	(puntuacion csi gusta_hardware lo_soporto 0)
+	(puntuacion csi gusta_hardware me_encanta -70)
+	(puntuacion csi gusta_hardware lo_soporto -20)
 	(puntuacion csi gusta_hardware lo_odio 30)
 	(puntuacion csi gusta_hardware no_se 0)
 
-	(puntuacion csi nota_media alta 10)
-	(puntuacion csi nota_media media 5)
+	(puntuacion csi nota_media alta 30)
+	(puntuacion csi nota_media media 15)
 	(puntuacion csi nota_media baja 0)
 	(puntuacion csi nota_media no_quiero_contestar 0)
 
-	(puntuacion csi gustaria_trabajar docencia 10)
-	(puntuacion csi gustaria_trabajar investigacion 20)
+	(puntuacion csi gustaria_trabajar docencia 20)
+	(puntuacion csi gustaria_trabajar investigacion 30)
 	(puntuacion csi gustaria_trabajar empresa_privada 15)
 	(puntuacion csi gustaria_trabajar empresa_publica 15)
 	(puntuacion csi gustaria_trabajar no_quiero_contestar 0)
 
-	(puntuacion csi trabajador mucho 15)
-	(puntuacion csi trabajador algo 5)
+	(puntuacion csi trabajador mucho 30)
+	(puntuacion csi trabajador algo 10)
 	(puntuacion csi trabajador nada -10)
 	(puntuacion csi trabajador no_quiero_contestar 0)
 )
 
 (deffacts puntuaciones_IS
 	; puntuacion_is para cada pregunta
-	(puntuacion is gusta_matematicas me_encanta -30)
-	(puntuacion is gusta_matematicas lo_soporto 25)
+	(puntuacion is gusta_matematicas me_encanta -60)
+	(puntuacion is gusta_matematicas lo_soporto -20)
 	(puntuacion is gusta_matematicas lo_odio 50)
 	(puntuacion is gusta_matematicas no_se 0)
 
-	(puntuacion is gusta_programar me_encanta 70)
-	(puntuacion is gusta_programar lo_soporto 40)
+	(puntuacion is gusta_programar me_encanta 100)
+	(puntuacion is gusta_programar lo_soporto 60)
 	(puntuacion is gusta_programar lo_odio -70)
 	(puntuacion is gusta_programar no_se 0)
 
-	(puntuacion is gusta_hardware me_encanta -30)
-	(puntuacion is gusta_hardware lo_soporto 0)
-	(puntuacion is gusta_hardware lo_odio 30)
+	(puntuacion is gusta_hardware me_encanta -80)
+	(puntuacion is gusta_hardware lo_soporto -20)
+	(puntuacion is gusta_hardware lo_odio 40)
 	(puntuacion is gusta_hardware no_se 0)
 
 	(puntuacion is nota_media alta 20)
@@ -113,12 +113,12 @@
 	(puntuacion ic gusta_matematicas lo_odio -10) ; ramas sin matemáticas: IC, TI o SI
 	(puntuacion ic gusta_matematicas no_se 0) ; no se que hacer
 
-	(puntuacion ic gusta_programar me_encanta 30)
-	(puntuacion ic gusta_programar lo_soporto 15)
-	(puntuacion ic gusta_programar lo_odio -10)
+	(puntuacion ic gusta_programar me_encanta 20)
+	(puntuacion ic gusta_programar lo_soporto 10)
+	(puntuacion ic gusta_programar lo_odio 0)
 	(puntuacion ic gusta_programar no_se 0)
 
-	(puntuacion ic gusta_hardware me_encanta 80)
+	(puntuacion ic gusta_hardware me_encanta 100)
 	(puntuacion ic gusta_hardware lo_soporto 40)
 	(puntuacion ic gusta_hardware lo_odio -70)
 	(puntuacion ic gusta_hardware no_se 0)
@@ -128,13 +128,13 @@
 	(puntuacion ic nota_media baja 10)
 	(puntuacion ic nota_media no_quiero_contestar 0)
 
-	(puntuacion ic gustaria_trabajar docencia 30)
-	(puntuacion ic gustaria_trabajar investigacion 20)
-	(puntuacion ic gustaria_trabajar empresa_privada 40)
-	(puntuacion ic gustaria_trabajar empresa_publica 20)
+	(puntuacion ic gustaria_trabajar docencia 20)
+	(puntuacion ic gustaria_trabajar investigacion 30)
+	(puntuacion ic gustaria_trabajar empresa_privada 20)
+	(puntuacion ic gustaria_trabajar empresa_publica 10)
 	(puntuacion ic gustaria_trabajar no_quiero_contestar 0)
 
-	(puntuacion ic trabajador mucho 30)
+	(puntuacion ic trabajador mucho 20)
 	(puntuacion ic trabajador algo 10)
 	(puntuacion ic trabajador nada -10)
 	(puntuacion ic trabajador no_quiero_contestar 0)
@@ -144,7 +144,7 @@
 	; puntuacion_csies para cada pregunta
 	(puntuacion ti gusta_matematicas me_encanta -60) ; para CSI o IS
 	(puntuacion ti gusta_matematicas lo_soporto -30) ; IS o CSI
-	(puntuacion ti gusta_matematicas lo_odio 30) ; ramas sin matemáticas: IC, TI o SI
+	(puntuacion ti gusta_matematicas lo_odio 60) ; ramas sin matemáticas: IC, TI o SI
 	(puntuacion ti gusta_matematicas no_se 0) ; no se que hacer
 
 	(puntuacion ti gusta_programar me_encanta -30)
@@ -154,12 +154,12 @@
 
 	(puntuacion ti gusta_hardware me_encanta -10)
 	(puntuacion ti gusta_hardware lo_soporto 10)
-	(puntuacion ti gusta_hardware lo_odio 15)
+	(puntuacion ti gusta_hardware lo_odio 30)
 	(puntuacion ti gusta_hardware no_se 0)
 
 	(puntuacion ti nota_media alta 5)
 	(puntuacion ti nota_media media 20)
-	(puntuacion ti nota_media baja 20)
+	(puntuacion ti nota_media baja 30)
 	(puntuacion ti nota_media no_quiero_contestar 0)
 
 	(puntuacion ti gustaria_trabajar docencia 20)
@@ -187,7 +187,7 @@
 	(puntuacion si gusta_programar no_se 0)
 
 	(puntuacion si gusta_hardware me_encanta 5)
-	(puntuacion si gusta_hardware lo_soporto 10)
+	(puntuacion si gusta_hardware lo_soporto 40)
 	(puntuacion si gusta_hardware lo_odio 15)
 	(puntuacion si gusta_hardware no_se 0)
 
@@ -433,14 +433,14 @@
 	)
 )
 
-(defrule recomendar_ha_respondido_todo
+(defrule recomendar_csi_ha_respondido_todo
 	(ha_respondido_todo)
 	(not (ya_he_aconsejado))
-	(recomendacion ?r1 ?val_r1)
-	(recomendacion ?r2 ?val_r2)
-	(recomendacion ?r3 ?val_r3)
-	(recomendacion ?r4 ?val_r4)
-	(recomendacion ?r5 ?val_r5)
+	(recomendacion csi ?val_r1)
+	(recomendacion ic ?val_r2)
+	(recomendacion is ?val_r3)
+	(recomendacion si ?val_r4)
+	(recomendacion ti ?val_r5)
 	(test
 		(and
 			(> ?val_r1 ?val_r2)
@@ -454,9 +454,109 @@
 		)
 	)
 	=>
-	(assert (consejo ?r1 te_gustan_mates_y_programar Antonio))
-
+	(assert (consejo csi te_gustan_mates_y_programar Antonio))
 )
+
+(defrule recomendar_is_ha_respondido_todo
+	(ha_respondido_todo)
+	(not (ya_he_aconsejado))
+	(recomendacion is ?val_r1)
+	(recomendacion ic ?val_r2)
+	(recomendacion csi ?val_r3)
+	(recomendacion si ?val_r4)
+	(recomendacion ti ?val_r5)
+	(test
+		(and
+			(> ?val_r1 ?val_r2)
+			(and
+				(> ?val_r1 ?val_r3)
+				(and
+					(> ?val_r1 ?val_r4)
+					(> ?val_r1 ?val_r5)
+				)
+			)
+		)
+	)
+	=>
+	(assert (consejo is te_gustan_mates_y_programar Antonio))
+)
+
+
+(defrule recomendar_ic_ha_respondido_todo
+	(ha_respondido_todo)
+	(not (ya_he_aconsejado))
+	(recomendacion ic ?val_r1)
+	(recomendacion is ?val_r2)
+	(recomendacion csi ?val_r3)
+	(recomendacion si ?val_r4)
+	(recomendacion ti ?val_r5)
+	(test
+		(and
+			(> ?val_r1 ?val_r2)
+			(and
+				(> ?val_r1 ?val_r3)
+				(and
+					(> ?val_r1 ?val_r4)
+					(> ?val_r1 ?val_r5)
+				)
+			)
+		)
+	)
+	=>
+	(assert (consejo ic te_gustan_mates_y_programar Antonio))
+)
+
+
+(defrule recomendar_si_ha_respondido_todo
+	(ha_respondido_todo)
+	(not (ya_he_aconsejado))
+	(recomendacion si ?val_r1)
+	(recomendacion ic ?val_r2)
+	(recomendacion csi ?val_r3)
+	(recomendacion is ?val_r4)
+	(recomendacion ti ?val_r5)
+	(test
+		(and
+			(> ?val_r1 ?val_r2)
+			(and
+				(> ?val_r1 ?val_r3)
+				(and
+					(> ?val_r1 ?val_r4)
+					(> ?val_r1 ?val_r5)
+				)
+			)
+		)
+	)
+	=>
+	(assert (consejo si te_gustan_mates_y_programar Antonio))
+)
+
+
+
+(defrule recomendar_ti_ha_respondido_todo
+	(ha_respondido_todo)
+	(not (ya_he_aconsejado))
+	(recomendacion ti ?val_r1)
+	(recomendacion ic ?val_r2)
+	(recomendacion csi ?val_r3)
+	(recomendacion si ?val_r4)
+	(recomendacion si ?val_r5)
+	(test
+		(and
+			(> ?val_r1 ?val_r2)
+			(and
+				(> ?val_r1 ?val_r3)
+				(and
+					(> ?val_r1 ?val_r4)
+					(> ?val_r1 ?val_r5)
+				)
+			)
+		)
+	)
+	=>
+	(assert (consejo ti te_gustan_mates_y_programar Antonio))
+)
+
 
 
 
