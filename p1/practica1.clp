@@ -29,18 +29,9 @@
 
 
 
-; ramas posibles
-(deffacts Ramas
-	(Rama Computacion_y_Sistemas_Inteligentes)
-	(Rama Ingenieria_del_Software)
-	(Rama Ingenieria_de_Computadores)
-	(Rama Sistemas_de_Informacion)
-	(Rama Tecnologias_de_la_Informacion)
-)
-
 (deffacts puntuaciones_CSI
 	; puntuacion_csies para cada pregunta
-	(puntuacion csi gusta_matematicas me_encanta 100)
+	(puntuacion csi gusta_matematicas me_encanta 120)
 	(puntuacion csi gusta_matematicas lo_soporto 30)
 	(puntuacion csi gusta_matematicas lo_odio -100)
 	(puntuacion csi gusta_matematicas no_se 0)
@@ -86,7 +77,7 @@
 
 	(puntuacion is gusta_hardware me_encanta -80)
 	(puntuacion is gusta_hardware lo_soporto -20)
-	(puntuacion is gusta_hardware lo_odio 40)
+	(puntuacion is gusta_hardware lo_odio 30)
 	(puntuacion is gusta_hardware no_se 0)
 
 	(puntuacion is nota_media alta 20)
@@ -118,7 +109,7 @@
 	(puntuacion ic gusta_programar lo_odio 0)
 	(puntuacion ic gusta_programar no_se 0)
 
-	(puntuacion ic gusta_hardware me_encanta 100)
+	(puntuacion ic gusta_hardware me_encanta 120)
 	(puntuacion ic gusta_hardware lo_soporto 40)
 	(puntuacion ic gusta_hardware lo_odio -70)
 	(puntuacion ic gusta_hardware no_se 0)
@@ -149,7 +140,7 @@
 
 	(puntuacion ti gusta_programar me_encanta -30)
 	(puntuacion ti gusta_programar lo_soporto 10)
-	(puntuacion ti gusta_programar lo_odio 30)
+	(puntuacion ti gusta_programar lo_odio 70)
 	(puntuacion ti gusta_programar no_se 0)
 
 	(puntuacion ti gusta_hardware me_encanta -10)
@@ -353,7 +344,7 @@
 	(declare (salience 8000))
 	(gusta matematicas ?val)
 	?x <- (recomendacion ?rama ?puntuacion)
-	(puntuacion ?rama gusta_matematicas ?valor)
+	(puntuacion ?rama gusta_matematicas ?val ?valor)
 	(not (he_puntuado_mates ?rama))
 	=>
 	(retract ?x)
@@ -433,6 +424,48 @@
 	)
 )
 
+
+(defrule recomendar_csi_mucha_puntuacion
+	(recomendacion csi ?puntuacion)
+	(test (> ?puntuacion 160))
+	=>
+	(assert (consejo csi te_gustan_mates_y_programar Antonio))
+)
+
+(defrule recomendar_is_mucha_puntuacion
+	(recomendacion is ?puntuacion)
+	(test (> ?puntuacion 160))
+	=>
+	(assert (consejo is te_programar Antonio))
+)
+
+(defrule recomendar_si_mucha_puntuacion
+	(recomendacion si ?puntuacion)
+	(test (> ?puntuacion 160))
+	=>
+	(assert (consejo si te_gusta_programar_y_quieres_trabajar_en_una_empresa Antonio))
+
+)
+
+
+(defrule recomendar_ic_mucha_puntuacion
+	(recomendacion ic ?puntuacion)
+	(test (> ?puntuacion 160))
+	=>
+	(assert (consejo ic te_gusta_el_hardware_y_eres_trabajador Antonio))
+)
+
+
+(defrule recomendar_ti_mucha_puntuacion
+	(recomendacion ti ?puntuacion)
+	(test (> ?puntuacion 160))
+	=>
+	(assert (consejo ti no_te_gusta_ni_programar_ni_hardware_ni_matematicas Antonio))
+
+)
+
+
+
 (defrule recomendar_csi_ha_respondido_todo
 	(ha_respondido_todo)
 	(not (ya_he_aconsejado))
@@ -478,6 +511,7 @@
 		)
 	)
 	=>
+	(printout t "Pntuacion " ?val_r1 crlf)
 	(assert (consejo is te_gusta_programar Antonio))
 )
 
