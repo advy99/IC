@@ -1,3 +1,7 @@
+; Antonio David Villegas Yeguas
+; ejercicios avanzados de CLIPS - ejercicio 8
+
+
 ;;; escritura
 (deffacts datos
 	(WRITE cosa1 cosa2 hola adios)
