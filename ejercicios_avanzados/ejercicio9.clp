@@ -1,4 +1,7 @@
+; Antonio David Villegas Yeguas
+; ejercicios avanzados de CLIPS - ejercicio 9
 
+; para comenzar el programa
 (defrule comenzar_leer
 	=>
 	(assert
@@ -14,7 +17,7 @@
 	(assert (SeguirLeyendo))
 )
 
-
+; vamos leyendo hasta encontrar el fin de fichero (EOF)
 (defrule readfile
 	?f <- (SeguirLeyendo)
 	=>
@@ -26,6 +29,7 @@
 	)
 )
 
+; cerramos el fichero
 (defrule closefile_read
 	(declare (salience -5))
 	?f <- (leer)
@@ -34,7 +38,7 @@
 	(retract ?f)
 )
 
-
+; mostramos los valores leidos
 (defrule mostrar_valores_leidos
 	(declare (salience -10))
 	(Dato ?valor)
