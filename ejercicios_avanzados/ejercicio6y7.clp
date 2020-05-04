@@ -1,3 +1,7 @@
+; Antonio David Villegas Yeguas
+; ejercicios avanzados de CLIPS - ejercicio 6 y 7
+
+
 (deftemplate Jugadores
 	(field Nombre)
 	(field Altura)
@@ -34,6 +38,7 @@
 	)
 )
 
+; si hay uno más alto, cambiamos el hecho mas_alto por el nuevo jugador
 (defrule mas_alto_total
 	(Jugadores (Nombre ?n1) (Altura ?altura1))
 	?x <- (mas_alto ?n2 ?altura2)
@@ -46,6 +51,7 @@
 	)
 )
 
+; una vez sabemos cual es el más alto lo mostramos por pantalla
 (defrule mostrar_mas_alto
 	(declare (salience -1))
 	(mas_alto ?n1 ?altura1)
