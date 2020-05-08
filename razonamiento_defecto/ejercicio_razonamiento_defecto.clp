@@ -81,7 +81,7 @@
 )
 
 
-
+; preguntamos al usuario por un animal
 (defrule pregunta_animal
 	(declare (salience -5))
 	(not (ha_preguntado ?))
@@ -92,6 +92,7 @@
 
 )
 
+; si el animal ya esta en la base de conocimiento respondemos lo que sabemos
 (defrule animal_en_base_de_conocimiento
 	(declare (salience -10))
 	(ha_preguntado ?animal)
@@ -102,6 +103,7 @@
 	(printout t ?animal " " ?si_no " vuela ya que " ?expl crlf)
 )
 
+; si no esta, preguntamos si es mamifero o ave
 (defrule no_esta_en_base_conocimiento_animal
 	(declare (salience -11))
 	(ha_preguntado ?animal)
@@ -115,6 +117,7 @@
 
 )
 
+; comprobamos que la respuesta dada es correcta, si no lo es volvemos a preguntar
 (defrule entrada_correcta
 	(declare (salience 99))
 	?x <- (tipo ?animal ?respuesta)
@@ -132,6 +135,8 @@
 	(retract ?x)
 )
 
+
+; si la respuesta es ave, introducimos ave, el sistema decidirá si vuela o no (por defecto si)
 (defrule entrada_tipo_ave
 	(declare (salience -15))
 	?x <- (tipo ?animal ?respuesta)
@@ -142,6 +147,7 @@
 
 )
 
+; si la respuesta es mamifero, introducimos mamifero, el sistema decidirá si vuela o no (por defecto no)
 (defrule entrada_tipo_mamifero
 	(declare (salience -15))
 	?x <- (tipo ?animal ?respuesta)
@@ -152,6 +158,7 @@
 
 )
 
+; si la respuesta es no se, introducimos que es un animal, el sistema decidirá si vuela o no (por defecto no)
 (defrule entrada_tipo_no_se
 	(declare (salience -15))
 	?x <- (tipo ?animal ?respuesta)
