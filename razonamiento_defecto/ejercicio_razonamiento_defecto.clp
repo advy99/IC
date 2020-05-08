@@ -1,3 +1,6 @@
+; Antonio David Villegas Yeguas
+; Ejercicio razonamiento por defecto
+
 ;;;;;;;;;;;;;;;Representación;;;;;;;;;;;;;;;
 
 ; (ave ?x) representa "?x es un ave"
