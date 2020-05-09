@@ -47,6 +47,23 @@
 
 )
 
+
+
+(defrule retracta_vuela_por_defecto
+	(declare (salience 1)) ; para retractar antes de inferir cosas erroneamente)
+	?f <- (vuela ?x ?r por_defecto)
+	(vuela ?x ?s seguro)
+	?f2 <- (explicacion vuela ?x ?expl)
+	=>
+	(retract ?f)
+	(bind ?expl (str-cat "retractamos que un " ?x " vuela por defecto, porque sabemos seguro que " ?x " " ?s " vuela"))
+	(assert (explicacion vuela ?x ?expl))
+	(retract ?f2)
+
+)
+; esta regla también elimina los por defecto cuando ya esta seguro
+
+
 ; Casi todas las aves vuelan -> puedo asumir por defecto que las aves vuelan
 
 (defrule ave_vuela_por_defecto
@@ -58,18 +75,6 @@
 	(assert (explicacion vuela ?x ?expl))
 
 )
-
-(defrule retracta_vuela_por_defecto
-	(declare (salience 1)) ; para retractar antes de inferir cosas erroneamente)
-	?f <- (vuela ?x ?r por_defecto)
-	(vuela ?x ?s seguro)
-	=>
-	(retract ?f)
-	(bind ?expl (str-cat "retractamos que un " ?x " vuela por defecto, porque sabemos seguro que " ?x ?s " vuela"))
-	(assert (explicacion retracta_vuela ?x ?expl))
-
-)
-; esta regla también elimina los por defecto cuando ya esta seguro
 
 
 ; La mayor parte de los animales no vuelan -> puede interesarme asumir por defecto que un animal no va a volar
