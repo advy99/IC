@@ -1050,7 +1050,7 @@
 
 	(retract ?mod)
 	(assert
-		(modulo preguntas)
+		(modulo preguntas_usuario)
 	)
 
 )
