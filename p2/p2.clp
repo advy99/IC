@@ -200,15 +200,42 @@
 )
 
 
-
-; inicio del programa, donde ponemos las recomendaciones a 0
 (defrule inicio
 	(declare (salience 9999))
-	(not (comienzo))
+	(not (eleccion_menu ?algo))
+	=>
+	(printout t "Indica si quieres que se te recomienden asignaturas o una rama: [rama/asignaturas]: " crlf)
+	(bind ?res (read))
+	(assert (eleccion_menu ?res))
+
+)
+
+(defrule comprobar_eleccion_inicio
+	(declare (salience 9999))
+	?x <- (eleccion_menu ?valor)
+	(not (comprobado_menu))
+	=>
+	(if (and (neq ?valor rama) (neq ?valor asignaturas))
+		then
+			(printout t "Introduce rama o asignaturas." crlf)
+			(retract ?x)
+		else
+			(assert
+				(comprobado_menu)
+			)
+	)
+
+)
+
+; inicio del programa, donde ponemos las recomendaciones a 0
+(defrule inicio_rama
+	(declare (salience 9999))
+	(not (comienzo_rama))
 	(not (ya_he_aconsejado))
+	(eleccion_menu rama)
 	=>
 	(assert
-		(comienzo)
+		(comienzo_rama)
 		(recomendacion csi 0)
 		; la rama por defecto, tendrá un punto mas de puntuacion
 		(recomendacion is 1)
@@ -227,6 +254,7 @@
 	(not (ya_he_aconsejado))
 	(not (gusta matematicas ?val))
 	(not (ha_respondido_todo))
+	(eleccion_menu rama)
 	=>
 	(printout t "¿Te gustan las matemáticas?[me_encanta/lo_soporto/lo_odio/no_se/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
@@ -243,6 +271,7 @@
 	(not (ya_he_aconsejado))
 	(not (gusta hardware ?val))
 	(not (ha_respondido_todo))
+	(eleccion_menu rama)
 	=>
 	(printout t "¿Te gusta el hardware?[me_encanta/lo_soporto/lo_odio/no_se/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
@@ -257,6 +286,7 @@
 	(not (ya_he_aconsejado))
 	(not (gusta programar ?val))
 	(not (ha_respondido_todo))
+	(eleccion_menu rama)
 	=>
 	(printout t "¿Te gusta programar?[me_encanta/lo_soporto/lo_odio/no_se/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
@@ -271,6 +301,7 @@
 	(not (ya_he_aconsejado))
 	(not (nota ?val))
 	(not (ha_respondido_todo))
+	(eleccion_menu rama)
 	=>
 	(printout t "¿Cuál es tu nota media?[alta/media/baja/no_quiero_contestar/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
@@ -285,6 +316,7 @@
 	(not (ya_he_aconsejado))
 	(not (trabajaria_en ?val))
 	(not (ha_respondido_todo))
+	(eleccion_menu rama)
 	=>
 	(printout t "¿En que te gustaría trabajar?[docencia/investigacion/empresa_privada/empresa_publica/no_quiero_contestar/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
@@ -300,6 +332,7 @@
 	(not (ya_he_aconsejado))
 	(not (es_trabajador ?val))
 	(not (ha_respondido_todo))
+	(eleccion_menu rama)
 	=>
 	(printout t "¿Eres trabajador/a?[mucho/algo/nada/no_quiero_contestar/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
@@ -324,6 +357,7 @@
 	?x <- (gusta ?algo ?valor)
 	?f <- (motivos $?m)
 	(not (comprobado ?algo ))
+	(eleccion_menu rama)
 	=>
 	(if (and (neq ?valor me_encanta) (and (neq ?valor lo_soporto) (and (neq ?valor lo_odio) (neq ?valor no_se)) ) )
 		then
@@ -342,6 +376,7 @@
 	(not (ya_he_aconsejado))
 	?x <- (trabajaria_en ?valor)
 	(test (and (neq ?valor docencia) (and  (neq ?valor empresa_publica) (and (neq ?valor empresa_privada ) (and (neq ?valor investigacion ) (neq ?valor no_quiero_contestar) ) ) ) ))
+	(eleccion_menu rama)
 	=>
 	(printout t "Por favor responde docencia, empresa_privada o empresa_publica" crlf)
 	(retract ?x)
@@ -352,6 +387,7 @@
 	(not (ya_he_aconsejado))
 	?x <- (nota ?valor)
 	(test (and (neq ?valor alta) (and  (neq ?valor media) (and (neq ?valor baja ) (neq ?valor no_quiero_contestar )  ) ) ))
+	(eleccion_menu rama)
 	=>
 	(printout t "Por favor responde alta, media, baja o no_quiero_contestar" crlf)
 	(retract ?x)
@@ -362,6 +398,7 @@
 	(not (ya_he_aconsejado))
 	?x <- (es_trabajador ?valor)
 	(test (and (neq ?valor mucho) (and  (neq ?valor algo) (and (neq ?valor nada ) (neq ?valor no_quiero_contestar )  ) ) ))
+	(eleccion_menu rama)
 	=>
 	(printout t "Por favor responde mucho, algo, nada o no_quiero_contestar" crlf)
 	(retract ?x)
@@ -378,6 +415,7 @@
 	(gusta hardware ?x1)
 	(gusta programar ?x2)
 	(trabajaria_en ?x3)
+	(eleccion_menu rama)
 	=>
 	(assert (ha_respondido_todo))
 )
@@ -394,6 +432,7 @@
 	?x <- (recomendacion ?rama ?puntuacion)
 	(puntuacion ?rama gusta_matematicas ?val ?valor)
 	(not (he_puntuado_mates ?rama))
+	(eleccion_menu rama)
 	=>
 	(retract ?x)
 	(assert
@@ -408,6 +447,7 @@
 	?x <- (recomendacion ?rama ?puntuacion)
 	(puntuacion ?rama gusta_programar ?val ?valor)
 	(not (he_puntuado_programar ?rama))
+	(eleccion_menu rama)
 	=>
 	(retract ?x)
 	(assert
@@ -422,6 +462,7 @@
 	?x <- (recomendacion ?rama ?puntuacion)
 	(puntuacion ?rama gusta_hardware ?val ?valor)
 	(not (he_puntuado_hardware ?rama))
+	(eleccion_menu rama)
 	=>
 	(retract ?x)
 	(assert
@@ -436,6 +477,7 @@
 	?x <- (recomendacion ?rama ?puntuacion)
 	(puntuacion ?rama nota_media ?val ?valor)
 	(not (he_puntuado_nota ?rama))
+	(eleccion_menu rama)
 	=>
 	(retract ?x)
 	(assert
@@ -450,6 +492,7 @@
 	?x <- (recomendacion ?rama ?puntuacion)
 	(puntuacion ?rama trabajador ?val ?valor)
 	(not (he_puntuado_trabajador ?rama))
+	(eleccion_menu rama)
 	=>
 	(retract ?x)
 	(assert
@@ -464,6 +507,7 @@
 	?x <- (recomendacion ?rama ?puntuacion)
 	(puntuacion ?rama gustaria_trabajar ?val ?valor)
 	(not (he_puntuado_trabajo ?rama))
+	(eleccion_menu rama)
 	=>
 	(retract ?x)
 	(assert
@@ -476,6 +520,7 @@
 (defrule recomendar_csi_mucha_puntuacion
 	(recomendacion csi ?puntuacion)
 	(test (> ?puntuacion 160))
+	(eleccion_menu rama)
 	=>
 	(assert (consejo csi Antonio))
 )
@@ -483,6 +528,7 @@
 (defrule recomendar_is_mucha_puntuacion
 	(recomendacion is ?puntuacion)
 	(test (> ?puntuacion 160))
+	(eleccion_menu rama)
 	=>
 	(assert (consejo is Antonio))
 )
@@ -490,6 +536,7 @@
 (defrule recomendar_si_mucha_puntuacion
 	(recomendacion si ?puntuacion)
 	(test (> ?puntuacion 160))
+	(eleccion_menu rama)
 	=>
 	(assert (consejo si Antonio))
 
@@ -499,6 +546,7 @@
 (defrule recomendar_ic_mucha_puntuacion
 	(recomendacion ic ?puntuacion)
 	(test (> ?puntuacion 160))
+	(eleccion_menu rama)
 	=>
 	(assert (consejo ic Antonio))
 )
@@ -507,6 +555,7 @@
 (defrule recomendar_ti_mucha_puntuacion
 	(recomendacion ti ?puntuacion)
 	(test (> ?puntuacion 160))
+	(eleccion_menu rama)
 	=>
 	(assert (consejo ti Antonio))
 
@@ -534,6 +583,7 @@
 			)
 		)
 	)
+	(eleccion_menu rama)
 	=>
 	(assert (consejo csi Antonio))
 )
@@ -558,6 +608,7 @@
 			)
 		)
 	)
+	(eleccion_menu rama)
 	=>
 	(printout t "Pntuacion " ?val_r1 crlf)
 	(assert (consejo is Antonio))
@@ -584,6 +635,7 @@
 			)
 		)
 	)
+	(eleccion_menu rama)
 	=>
 	(assert (consejo ic Antonio))
 )
@@ -609,6 +661,7 @@
 			)
 		)
 	)
+	(eleccion_menu rama)
 	=>
 	(assert (consejo si Antonio))
 )
@@ -635,6 +688,7 @@
 			)
 		)
 	)
+	(eleccion_menu rama)
 	=>
 	(assert (consejo ti Antonio))
 )
@@ -646,6 +700,7 @@
 	(not (ya_he_aconsejado))
 	(consejo ?rama ?apodo)
 	(motivos $?motivos)
+	(eleccion_menu rama)
 	=>
 	(printout t "El experto " ?apodo " te aconseja escoger la rama " ?rama " ya que " $?motivos crlf)
 	(assert
