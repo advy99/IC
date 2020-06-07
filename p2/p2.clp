@@ -1173,17 +1173,17 @@
 	(declare (salience 9999))
 	(modulo asignaturas)
 	(modulo preguntas_usuario)
-	(recomendar ?asig $?recomendacion1 por_pregunta_respondida)
-	?def <- (recomendar ?asig $?recomendacion2 por_defecto)
+	(recomendar ?asig ?recomendacion1 por_pregunta_respondida)
+	?def <- (recomendar ?asig ?recomendacion2 por_defecto)
 	?x <- (creditos_recomendados defecto ?val1)
-	?y <- (creditos_recomendados respondido ?val2)
+	?y <- (creditos_recomendados respuestas ?val2)
 	=>
 	(retract ?def)
 	(retract ?x)
 	(retract ?y)
 	(assert
 		(creditos_recomendados defecto (- ?val1 6))
-		(creditos_recomendados respondido (+ ?val2 6))
+		(creditos_recomendados respuestas (+ ?val2 6))
 	)
 
 )
@@ -1193,7 +1193,7 @@
 	(declare (salience 9997))
 	(modulo asignaturas)
 	(modulo preguntas_usuario)
-	(creditos_recomendados respondido ?val)
+	(creditos_recomendados respuestas ?val)
 	(max_creditos ?max)
 	(test (= ?val ?max))
 	=>
