@@ -738,6 +738,10 @@
 
 
 
+
+
+
+
 ;
 ;
 ;
@@ -746,6 +750,38 @@
 ;
 ;
 
+
+(deffacts asignaturas
+	; asignaturas de primero , primer cuatrimestre
+	(asig FP primero primer_cuatrimestre)
+	(asig FS primero primer_cuatrimestre)
+	(asig FFT primero primer_cuatrimestre)
+	(asig CA primero primer_cuatrimestre)
+	(asig ALEM primero primer_cuatrimestre)
+
+	; asignaturas de primero, segundo cuatrimestre
+	(asig LMD primero segundo_cuatrimestre)
+	(asig ES primero segundo_cuatrimestre)
+	(asig TOC primero segundo_cuatrimestre)
+	(asig IES primero segundo_cuatrimestre)
+	(asig MP primero segundo_cuatrimestre)
+
+
+	; asignaturas de segundo, primer cuatrimestre
+	(asig SCD segundo primer_cuatrimestre)
+	(asig EC segundo primer_cuatrimestre)
+	(asig ED segundo primer_cuatrimestre)
+	(asig PDOO segundo primer_cuatrimestre)
+	(asig SO segundo primer_cuatrimestre)
+
+	; asignaturas segundo, segundo cuatrimestre
+	(asig AC segundo segundo_cuatrimestre)
+	(asig IA segundo segundo_cuatrimestre)
+	(asig FIS segundo segundo_cuatrimestre)
+	(asig FBD segundo segundo_cuatrimestre)
+	(asig ALG segundo segundo_cuatrimestre)
+)
+
 (defrule ini_asignaturas
 	(modulo asignaturas)
 	=>
@@ -753,6 +789,9 @@
 		(modulo preguntar_asignaturas)
 		(seguir_preguntando)
 		(max_creditos 0)
+
+		(creditos_recomendados_defecto 0)
+		(creditos_recomendados 0)
 	)
 
 )
@@ -900,7 +939,7 @@
 (defrule comprobar_num_creditos_multiplo_6
 	(declare (salience 9999))
 	(modulo asignaturas)
-	(modulo preguntar_creditos)
+	?z <- (modulo preguntar_creditos)
 	?x <- (creditos_asignar ?val)
 	?f <- (comprobar_multiplo_6 ?valor)
 	=>
@@ -920,6 +959,12 @@
 		else
 			; es multiplo de 6, ya no hay que comprobar
 			(retract ?f)
+			; dejamos de preguntar por los creditos a recomendar, pasamos
+			; a establecer las recomendaciones por defecto.
+			(retract ?z)
+			(assert
+				(modulo recomendar_defecto)
+			)
 	)
 
 	)
