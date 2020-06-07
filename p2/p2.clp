@@ -750,10 +750,84 @@
 	(modulo asignaturas)
 	=>
 	(assert
-		(modulo preguntar_creditos)
+		(modulo preguntar_asignaturas)
+		(seguir_preguntando)
 	)
 
 )
+
+(defrule preguntar_asig
+	(declare (salience 9997))
+	?x <- (modulo preguntar_asignaturas)
+	?f <- (seguir_preguntando)
+	(modulo asignaturas)
+	=>
+	(printout t "Introduce una asignatura [ALEM/CA/FFT/FP/FS/IES/ES/LMD/MP/TOC/PDOO/EC/ED/SO/SCD/IA/FIS/AC/FBD/ALG/fin] (fin para acabar): " crlf)
+	(bind ?asig (read))
+	(retract ?f)
+	(if (eq ?asig fin)
+	 	then (assert
+	 			(modulo contar_max_creditos)
+	 		  )
+			  (retract ?x)
+		else
+			; si no existe esa asignatura, la insertamos
+			(assert (asignatura ?asig))
+			(assert
+				(seguir_preguntando)
+			)
+	)
+
+)
+
+(defrule comprobar_entrada_asignatura
+	(declare (salience 9999))
+	(modulo preguntar_asignaturas)
+	(modulo asignaturas)
+	?x <- (asignatura ?asig)
+	(test
+		(and (neq ?asig ALEM)
+		(and (neq ?asig CA)
+		(and (neq ?asig FFT)
+		(and (neq ?asig FP)
+		(and (neq ?asig FS)
+
+		(and (neq ?asig IES)
+		(and (neq ?asig ES)
+		(and (neq ?asig LMD)
+		(and (neq ?asig TOC)
+		(and (neq ?asig MP)
+
+		(and (neq ?asig SCD)
+		(and (neq ?asig ED)
+		(and (neq ?asig EC)
+		(and (neq ?asig SO)
+		(and (neq ?asig PDOO)
+
+		(and (neq ?asig FBD)
+		(and (neq ?asig FIS)
+		(and (neq ?asig IA)
+		(and (neq ?asig ALG)
+			  (neq ?asig AC)
+
+	))))))))))))))))))))
+	=>
+	(printout t "Debes introducir una asignatura que este en la lista dada." crlf)
+	(retract ?x)
+
+)
+
+(defrule asignaturas_escogidas
+	(declare (salience 9998))
+	(modulo preguntar_asignaturas)
+	(seguir_preguntando)
+	(modulo asignaturas)
+	(asignatura ?asig)
+	=>
+	(printout t "Has escogido " ?asig crlf)
+)
+
+
 
 (defrule pregunta_numero_creditos
 	(declare (salience 9990))
