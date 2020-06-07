@@ -272,13 +272,22 @@
 	(not (ya_he_aconsejado))
 	(not (gusta matematicas ?val))
 	(not (ha_respondido_todo))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "¿Te gustan las matemáticas?[me_encanta/lo_soporto/lo_odio/no_se/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
 
-	(if (neq ?respuesta dime_respuesta) then (assert (gusta matematicas ?respuesta))
-	else (assert (ha_respondido_todo))
+	(if (neq ?respuesta dime_respuesta)
+		then
+			(assert (gusta matematicas ?respuesta))
+		else
+			(assert (ha_respondido_todo))
 	)
 
 )
@@ -289,13 +298,20 @@
 	(not (ya_he_aconsejado))
 	(not (gusta hardware ?val))
 	(not (ha_respondido_todo))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "¿Te gusta el hardware?[me_encanta/lo_soporto/lo_odio/no_se/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
 
 	(if (neq ?respuesta dime_respuesta) then (assert (gusta hardware ?respuesta))
-	else (assert (ha_respondido_todo))
+	else
+		(assert (ha_respondido_todo))
 	)
 )
 
@@ -304,13 +320,20 @@
 	(not (ya_he_aconsejado))
 	(not (gusta programar ?val))
 	(not (ha_respondido_todo))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "¿Te gusta programar?[me_encanta/lo_soporto/lo_odio/no_se/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
 
 	(if (neq ?respuesta dime_respuesta) then (assert (gusta programar ?respuesta))
-	else (assert (ha_respondido_todo))
+	else
+		(assert (ha_respondido_todo))
 	)
 )
 
@@ -319,13 +342,20 @@
 	(not (ya_he_aconsejado))
 	(not (nota ?val))
 	(not (ha_respondido_todo))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "¿Cuál es tu nota media?[alta/media/baja/no_quiero_contestar/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
 
 	(if (neq ?respuesta dime_respuesta) then (assert (nota ?respuesta))
-	else (assert (ha_respondido_todo))
+		else
+			(assert (ha_respondido_todo))
 	)
 )
 
@@ -334,13 +364,20 @@
 	(not (ya_he_aconsejado))
 	(not (trabajaria_en ?val))
 	(not (ha_respondido_todo))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "¿En que te gustaría trabajar?[docencia/investigacion/empresa_privada/empresa_publica/no_quiero_contestar/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
 
 	(if (neq ?respuesta dime_respuesta) then (assert (trabajaria_en ?respuesta))
-	else (assert (ha_respondido_todo))
+		else
+		 	(assert (ha_respondido_todo))
 	)
 )
 
@@ -350,13 +387,20 @@
 	(not (ya_he_aconsejado))
 	(not (es_trabajador ?val))
 	(not (ha_respondido_todo))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "¿Eres trabajador/a?[mucho/algo/nada/no_quiero_contestar/dime_respuesta]" crlf)
 	(bind ?respuesta (read))
 
 	(if (neq ?respuesta dime_respuesta) then (assert (es_trabajador ?respuesta))
-	else (assert (ha_respondido_todo))
+		else
+		 (assert (ha_respondido_todo))
 	)
 )
 
@@ -375,7 +419,13 @@
 	?x <- (gusta ?algo ?valor)
 	?f <- (motivos $?m)
 	(not (comprobado ?algo ))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(if (and (neq ?valor me_encanta) (and (neq ?valor lo_soporto) (and (neq ?valor lo_odio) (neq ?valor no_se)) ) )
 		then
@@ -394,7 +444,13 @@
 	(not (ya_he_aconsejado))
 	?x <- (trabajaria_en ?valor)
 	(test (and (neq ?valor docencia) (and  (neq ?valor empresa_publica) (and (neq ?valor empresa_privada ) (and (neq ?valor investigacion ) (neq ?valor no_quiero_contestar) ) ) ) ))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "Por favor responde docencia, empresa_privada o empresa_publica" crlf)
 	(retract ?x)
@@ -405,7 +461,13 @@
 	(not (ya_he_aconsejado))
 	?x <- (nota ?valor)
 	(test (and (neq ?valor alta) (and  (neq ?valor media) (and (neq ?valor baja ) (neq ?valor no_quiero_contestar )  ) ) ))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "Por favor responde alta, media, baja o no_quiero_contestar" crlf)
 	(retract ?x)
@@ -416,7 +478,13 @@
 	(not (ya_he_aconsejado))
 	?x <- (es_trabajador ?valor)
 	(test (and (neq ?valor mucho) (and  (neq ?valor algo) (and (neq ?valor nada ) (neq ?valor no_quiero_contestar )  ) ) ))
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(printout t "Por favor responde mucho, algo, nada o no_quiero_contestar" crlf)
 	(retract ?x)
@@ -433,7 +501,13 @@
 	(gusta hardware ?x1)
 	(gusta programar ?x2)
 	(trabajaria_en ?x3)
-	(modulo rama)
+	(or
+		(modulo rama)
+		(and
+			(modulo asignaturas)
+			(modulo preguntas_usuario)
+		)
+	)
 	=>
 	(assert (ha_respondido_todo))
 )
@@ -1048,6 +1122,22 @@
 		(creditos_recomendados defecto (+ ?val 6))
 	)
 
+	(retract ?mod)
+	(assert
+		(modulo preguntas_usuario)
+	)
+
+)
+
+(defrule pasar_preguntar
+	(declare (salience 9999))
+	(modulo asignaturas)
+	?mod <- (modulo recomendar_defecto)
+	(creditos_recomendados defecto ?val)
+	; todavía quedan creditos por asignar
+	(creditos_asignar ?num_cred)
+	(test (= ?val ?num_cred))
+	=>
 	(retract ?mod)
 	(assert
 		(modulo preguntas_usuario)
