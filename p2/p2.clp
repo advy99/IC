@@ -200,6 +200,15 @@
 )
 
 
+;
+;
+;
+; Reglas para menu de la práctica
+;
+;
+;
+
+
 (defrule inicio
 	(declare (salience 9999))
 	(not (modulo ?algo))
@@ -226,6 +235,15 @@
 	)
 
 )
+
+
+;
+;
+;
+; Reglas para la parte A de la práctica.
+;
+;
+;
 
 ; inicio del programa, donde ponemos las recomendaciones a 0
 (defrule inicio_rama
@@ -705,6 +723,93 @@
 	(printout t "El experto " ?apodo " te aconseja escoger la rama " ?rama " ya que " $?motivos crlf)
 	(assert
 		(ya_he_aconsejado)
+	)
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+;
+;
+;
+; Reglas para la parte B de la práctica
+;
+;
+;
+
+(defrule ini_asignaturas
+	(modulo asignaturas)
+	=>
+	(assert
+		(modulo preguntar_creditos)
+	)
+
+)
+
+(defrule pregunta_numero_creditos
+	(declare (salience 9990))
+	(not (creditos_asignar ?val))
+	(modulo asignaturas)
+	(modulo preguntar_creditos)
+	=>
+	(printout t "Introduce el número de créditos a recomendar (ha de ser múltiplo de 6 y estar entre 0 y 120):" crlf)
+	(assert (creditos_asignar (read)))
+)
+
+(defrule comprobar_num_creditos
+	(declare (salience 9980))
+	(modulo asignaturas)
+	(modulo preguntar_creditos)
+	?x <- (creditos_asignar ?val)
+
+	=>
+	; tenemos 20 asignaturas, 120 créditos
+	(if (and (> ?val 0) (<= ?val 120) )
+		then (assert
+				 (comprobar_multiplo_6 ?val)
+				)
+		else
+			(printout t "El número de creditos ha de estar entre 0 y 120" crlf)
+			(retract ?x)
+	)
+
+)
+
+
+(defrule comprobar_num_creditos_multiplo_6
+	(declare (salience 9999))
+	(modulo asignaturas)
+	(modulo preguntar_creditos)
+	?x <- (creditos_asignar ?val)
+	?f <- (comprobar_multiplo_6 ?valor)
+	=>
+	(if (> ?valor 0)
+		then
+			; si es mayor que 0, seguimos restando
+			(retract ?f)
+			(assert
+				(comprobar_multiplo_6 (- ?valor 6))
+			)
+		else (if (< ?valor 0)
+		then
+			; no es multiplo de 6
+			(printout t "El número de creditos tiene que ser múltiplo de 6" crlf)
+			(retract ?x)
+			(retract ?f)
+		else
+			; es multiplo de 6, ya no hay que comprobar
+			(retract ?f)
+	)
+
 	)
 
 )
