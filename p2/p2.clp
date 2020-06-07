@@ -979,15 +979,78 @@
 	(asignatura ?asig)
 	(asig ?asig primero ?cuatrimestre)
 	?x <- (creditos_recomendados defecto ?val)
+
+	; no la he recomendado ya por defecto
+	(not (recomendar ?asig ?r por_defecto))
+
 	; todavía quedan creditos por asignar
 	(creditos_asignar ?num_cred)
 	(test (< ?val ?num_cred))
+
 	=>
-	(bind ?recomendacion " ya que es de formación básica ")
+	(bind ?recomendacion " ya que es de formación básica.")
 	(retract ?x)
 	(assert
 		(recomendar ?asig ?recomendacion por_defecto)
 		(creditos_recomendados defecto (+ ?val 6))
+	)
+
+)
+
+; recomendamos por defecto las asignaturas obligatorias que menos dependen de las básicas
+(defrule recomendar_defecto_obligatorias_no_necesitan_basicas
+	(declare (salience 9990))
+	(modulo asignaturas)
+	(modulo recomendar_defecto)
+	(asignatura ?asig)
+	(asig ?asig segundo ?cuatrimestre)
+
+	?x <- (creditos_recomendados defecto ?val)
+	; todavía quedan creditos por asignar
+	(creditos_asignar ?num_cred)
+	(test (< ?val ?num_cred))
+
+	; no la he recomendado ya por defecto
+	(not (recomendar ?asig ?r por_defecto))
+
+	(test (or (eq ?asig FBD) (or (eq ?asig FIS) (eq ?asig ED) )))
+	=>
+	(bind ?recomendacion " ya que aunque no es básica, no depende de otras. ")
+	(retract ?x)
+	(assert
+		(recomendar ?asig ?recomendacion por_defecto)
+		(creditos_recomendados defecto (+ ?val 6))
+	)
+
+)
+
+
+; recomendamos el resto por defecto
+(defrule recomendar_resto_defecto
+	(declare (salience 9980))
+	(modulo asignaturas)
+	?mod <- (modulo recomendar_defecto)
+	(asignatura ?asig)
+	(asig ?asig segundo ?cuatrimestre)
+
+	?x <- (creditos_recomendados defecto ?val)
+	; todavía quedan creditos por asignar
+	(creditos_asignar ?num_cred)
+	(test (< ?val ?num_cred))
+
+	; no la he recomendado ya por defecto
+	(not (recomendar ?asig ?r por_defecto))
+	=>
+	(bind ?recomendacion " ya que no tengo información y no tengo otras asignaturas que recomendarte. ")
+	(retract ?x)
+	(assert
+		(recomendar ?asig ?recomendacion por_defecto)
+		(creditos_recomendados defecto (+ ?val 6))
+	)
+
+	(retract ?mod)
+	(assert
+		(modulo preguntas)
 	)
 
 )
