@@ -790,8 +790,8 @@
 		(seguir_preguntando)
 		(max_creditos 0)
 
-		(creditos_recomendados_defecto 0)
-		(creditos_recomendados 0)
+		(creditos_recomendados defecto 0)
+		(creditos_recomendados respuestas 0)
 	)
 
 )
@@ -967,6 +967,27 @@
 			)
 	)
 
+	)
+
+)
+
+;sabemos que las básicas son las de primero, las recomendamos por defecto
+(defrule recomendar_defecto_basicas
+	(declare (salience 9999))
+	(modulo asignaturas)
+	(modulo recomendar_defecto)
+	(asignatura ?asig)
+	(asig ?asig primero ?cuatrimestre)
+	?x <- (creditos_recomendados defecto ?val)
+	; todavía quedan creditos por asignar
+	(creditos_asignar ?num_cred)
+	(test (< ?val ?num_cred))
+	=>
+	(bind ?recomendacion " ya que es de formación básica ")
+	(retract ?x)
+	(assert
+		(recomendar ?asig ?recomendacion por_defecto)
+		(creditos_recomendados defecto (+ ?val 6))
 	)
 
 )
