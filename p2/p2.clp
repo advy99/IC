@@ -215,6 +215,7 @@
 		(recomendacion ic 0)
 		(recomendacion ti 0)
 		(recomendacion si 0)
+		(motivos)
 	)
 )
 
@@ -321,10 +322,19 @@
 	(declare (salience 9999))
 	(not (ya_he_aconsejado))
 	?x <- (gusta ?algo ?valor)
-	(test (and (neq ?valor me_encanta) (and (neq ?valor lo_soporto) (and (neq ?valor lo_odio) (neq ?valor no_se)) ) ))
+	?f <- (motivos $?m)
+	(not (comprobado ?algo ))
 	=>
-	(printout t "Por favor responde me_encanta, lo_soporto, lo_odio o no_se" crlf)
-	(retract ?x)
+	(if (and (neq ?valor me_encanta) (and (neq ?valor lo_soporto) (and (neq ?valor lo_odio) (neq ?valor no_se)) ) )
+		then
+			(printout t "Por favor responde me_encanta, lo_soporto, lo_odio o no_se" crlf)
+			(retract ?x)
+		else
+			(retract ?f)
+			(assert (motivos ?valor ?algo , $?m ))
+			(assert (comprobado ?algo ))
+	)
+
 )
 
 (defrule comprobar_entrada_trabajo
@@ -343,7 +353,7 @@
 	?x <- (nota ?valor)
 	(test (and (neq ?valor alta) (and  (neq ?valor media) (and (neq ?valor baja ) (neq ?valor no_quiero_contestar )  ) ) ))
 	=>
-	(printout t "Por favor responde anta, media, baja o no_quiero_contestar" crlf)
+	(printout t "Por favor responde alta, media, baja o no_quiero_contestar" crlf)
 	(retract ?x)
 )
 
@@ -467,21 +477,21 @@
 	(recomendacion csi ?puntuacion)
 	(test (> ?puntuacion 160))
 	=>
-	(assert (consejo csi te_gustan_mates_y_programar Antonio))
+	(assert (consejo csi Antonio))
 )
 
 (defrule recomendar_is_mucha_puntuacion
 	(recomendacion is ?puntuacion)
 	(test (> ?puntuacion 160))
 	=>
-	(assert (consejo is te_programar Antonio))
+	(assert (consejo is Antonio))
 )
 
 (defrule recomendar_si_mucha_puntuacion
 	(recomendacion si ?puntuacion)
 	(test (> ?puntuacion 160))
 	=>
-	(assert (consejo si te_gusta_programar_y_quieres_trabajar_en_una_empresa Antonio))
+	(assert (consejo si Antonio))
 
 )
 
@@ -490,7 +500,7 @@
 	(recomendacion ic ?puntuacion)
 	(test (> ?puntuacion 160))
 	=>
-	(assert (consejo ic te_gusta_el_hardware_y_eres_trabajador Antonio))
+	(assert (consejo ic Antonio))
 )
 
 
@@ -498,7 +508,7 @@
 	(recomendacion ti ?puntuacion)
 	(test (> ?puntuacion 160))
 	=>
-	(assert (consejo ti no_te_gusta_ni_programar_ni_hardware_ni_matematicas Antonio))
+	(assert (consejo ti Antonio))
 
 )
 
@@ -525,7 +535,7 @@
 		)
 	)
 	=>
-	(assert (consejo csi te_gustan_mates_y_programar Antonio))
+	(assert (consejo csi Antonio))
 )
 
 (defrule recomendar_is_ha_respondido_todo
@@ -550,7 +560,7 @@
 	)
 	=>
 	(printout t "Pntuacion " ?val_r1 crlf)
-	(assert (consejo is te_gusta_programar Antonio))
+	(assert (consejo is Antonio))
 )
 
 
@@ -575,7 +585,7 @@
 		)
 	)
 	=>
-	(assert (consejo ic te_gusta_el_hardware_y_eres_trabajador Antonio))
+	(assert (consejo ic Antonio))
 )
 
 
@@ -600,7 +610,7 @@
 		)
 	)
 	=>
-	(assert (consejo si te_gusta_programar_y_quieres_trabajar_en_una_empresa Antonio))
+	(assert (consejo si Antonio))
 )
 
 
@@ -626,7 +636,7 @@
 		)
 	)
 	=>
-	(assert (consejo ti no_te_gusta_ni_programar_ni_hardware_ni_matematicas Antonio))
+	(assert (consejo ti Antonio))
 )
 
 
@@ -634,9 +644,10 @@
 (defrule mostrar_rama_aconsejada
 	(declare (salience 9990))
 	(not (ya_he_aconsejado))
-	(consejo ?rama ?motivo ?apodo)
+	(consejo ?rama ?apodo)
+	(motivos $?motivos)
 	=>
-	(printout t "El experto " ?apodo " te aconseja escoger la rama " ?rama " ya que " ?motivo crlf)
+	(printout t "El experto " ?apodo " te aconseja escoger la rama " ?rama " ya que " $?motivos crlf)
 	(assert
 		(ya_he_aconsejado)
 	)
