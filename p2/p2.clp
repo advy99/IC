@@ -1152,10 +1152,60 @@
 
 
 
+(defrule recomendar_basicas_matematicas
+	(declare (salience 9990))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(gusta matematicas ?res)
+	(asignatura ?asig)
 
+	(test (eq ?res me_encanta))
+
+	(test (or (eq ?asig ALEM) (or (eq ?asig LMD) (eq ?asig CA))))
+	=>
+	(assert
+		(recomendar ?asig porque_gusta_matematicas por_pregunta_respondida)
+	)
+
+)
+
+(defrule retirar_por_defecto
+	(declare (salience 9999))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(recomendar ?asig $?recomendacion1 por_pregunta_respondida)
+	?def <- (recomendar ?asig $?recomendacion2 por_defecto)
+	?x <- (creditos_recomendados defecto ?val1)
+	?y <- (creditos_recomendados respondido ?val2)
+	=>
+	(retract ?def)
+	(retract ?x)
+	(retract ?y)
+	(assert
+		(creditos_recomendados defecto (- ?val1 6))
+		(creditos_recomendados respondido (+ ?val2 6))
+	)
+
+)
+
+
+(defrule tengo_suficientes_recomendaciones
+	(declare (salience 9997))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(creditos_recomendados respondido ?val)
+	(max_creditos ?max)
+	(test (= ?val ?max))
+	=>
+	(assert
+		(ha_respondido_todo)
+	)
+
+
+)
 
 (defrule pasar_mostrar_recomendacion_asig
-	(declare (salience 9999))
+	(declare (salience 9998))
 	(modulo asignaturas)
 	?x <- (modulo preguntas_usuario)
 	(ha_respondido_todo)
@@ -1175,7 +1225,7 @@
 	(modulo mostrar_recomendaciones)
 	?x <- (recomendar ?asig ?recomendacion por_pregunta_respondida)
 	=>
-	(printout t " Te recomiendo la asignatura " ?asig ?recomendacion " Esta recomendacion la he hecho por_pregunta_respondida" crlf)
+	(printout t " Te recomiendo la asignatura " ?asig " " ?recomendacion " Esta recomendacion la he hecho por_pregunta_respondida" crlf)
 	(retract ?x)
 )
 
@@ -1186,6 +1236,6 @@
 	(modulo mostrar_recomendaciones)
 	?x <- (recomendar ?asig ?recomendacion por_defecto)
 	=>
-	(printout t " Te recomiendo la asignatura " ?asig ?recomendacion " Esta recomendacion la he hecho por_defecto" crlf)
+	(printout t " Te recomiendo la asignatura " ?asig " " ?recomendacion " Esta recomendacion la he hecho por_defecto" crlf)
 	(retract ?x)
 )
