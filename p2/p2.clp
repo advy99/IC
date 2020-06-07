@@ -1144,3 +1144,48 @@
 	)
 
 )
+
+
+
+
+
+
+
+
+
+
+(defrule pasar_mostrar_recomendacion_asig
+	(declare (salience 9999))
+	(modulo asignaturas)
+	?x <- (modulo preguntas_usuario)
+	(ha_respondido_todo)
+	=>
+	(retract ?x)
+	(assert
+		(modulo mostrar_recomendaciones)
+	)
+
+)
+
+
+
+(defrule dime_recomendacion_asignaturas_respondidas
+	(declare (salience 9999))
+	(modulo asignaturas)
+	(modulo mostrar_recomendaciones)
+	?x <- (recomendar ?asig ?recomendacion por_pregunta_respondida)
+	=>
+	(printout t " Te recomiendo la asignatura " ?asig ?recomendacion " Esta recomendacion la he hecho por_pregunta_respondida" crlf)
+	(retract ?x)
+)
+
+
+(defrule dime_recomendacion_asignaturas_por_defecto
+	(declare (salience 9990))
+	(modulo asignaturas)
+	(modulo mostrar_recomendaciones)
+	?x <- (recomendar ?asig ?recomendacion por_defecto)
+	=>
+	(printout t " Te recomiendo la asignatura " ?asig ?recomendacion " Esta recomendacion la he hecho por_defecto" crlf)
+	(retract ?x)
+)
