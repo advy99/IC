@@ -752,6 +752,7 @@
 	(assert
 		(modulo preguntar_asignaturas)
 		(seguir_preguntando)
+		(max_creditos 0)
 	)
 
 )
@@ -829,13 +830,50 @@
 
 
 
+
+
+
+
+(defrule contar_max
+	(declare (salience 9999))
+	(modulo asignaturas)
+	(modulo contar_max_creditos)
+	?x <- (max_creditos ?val)
+	(asignatura ?asig)
+	(not (contado ?asig))
+	=>
+	(retract ?x)
+	(assert
+		(contado ?asig)
+		(max_creditos (+ ?val 6))
+	)
+)
+
+
+(defrule fin_contar
+	(modulo asignaturas)
+	?x <- (modulo contar_max_creditos)
+	=>
+	(retract ?x)
+	(assert
+		(modulo preguntar_creditos)
+	)
+)
+
+
+
+
+
+
+
 (defrule pregunta_numero_creditos
 	(declare (salience 9990))
 	(not (creditos_asignar ?val))
 	(modulo asignaturas)
 	(modulo preguntar_creditos)
+	(max_creditos ?max)
 	=>
-	(printout t "Introduce el número de créditos a recomendar (ha de ser múltiplo de 6 y estar entre 0 y 120):" crlf)
+	(printout t "Introduce el número de créditos a recomendar (ha de ser múltiplo de 6 y ser mayor que 0 y menor o igual que " ?max "):" crlf)
 	(assert (creditos_asignar (read)))
 )
 
@@ -844,7 +882,7 @@
 	(modulo asignaturas)
 	(modulo preguntar_creditos)
 	?x <- (creditos_asignar ?val)
-
+	(max_creditos ?max)
 	=>
 	; tenemos 20 asignaturas, 120 créditos
 	(if (and (> ?val 0) (<= ?val 120) )
@@ -852,7 +890,7 @@
 				 (comprobar_multiplo_6 ?val)
 				)
 		else
-			(printout t "El número de creditos ha de estar entre 0 y 120" crlf)
+			(printout t "El número de creditos ha de ser mayor que 0 y menor o igual que " ?max crlf)
 			(retract ?x)
 	)
 
