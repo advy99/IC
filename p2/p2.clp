@@ -1352,9 +1352,16 @@
 	(modulo asignaturas)
 	(modulo mostrar_recomendaciones)
 	?x <- (recomendar ?asig ?recomendacion por_pregunta_respondida)
+	?f <- (creditos_asignar ?cred)
+	(test (!= ?cred 0))
 	=>
 	(printout t " Te recomiendo la asignatura " ?asig " " ?recomendacion " Esta recomendacion la he hecho por_pregunta_respondida" crlf)
 	(retract ?x)
+	(retract ?f)
+	(assert
+		(creditos_asignar (- ?cred 6))
+	)
+
 )
 
 
@@ -1363,7 +1370,13 @@
 	(modulo asignaturas)
 	(modulo mostrar_recomendaciones)
 	?x <- (recomendar ?asig ?recomendacion por_defecto)
+	?f <- (creditos_asignar ?cred)
+	(test (!= ?cred 0))
 	=>
 	(printout t " Te recomiendo la asignatura " ?asig " " ?recomendacion " Esta recomendacion la he hecho por_defecto" crlf)
 	(retract ?x)
+	(retract ?f)
+	(assert
+		(creditos_asignar (- ?cred 6))
+	)
 )
