@@ -1161,13 +1161,89 @@
 
 	(test (eq ?res me_encanta))
 
-	(test (or (eq ?asig ALEM) (or (eq ?asig LMD) (eq ?asig CA))))
+	(test (or (eq ?asig ALEM) (or (eq ?asig LMD) (or (eq ?asig CA) (eq ?asig ES) ))))
 	=>
 	(assert
 		(recomendar ?asig porque_gusta_matematicas por_pregunta_respondida)
 	)
 
 )
+
+
+(defrule recomendar_basicas_hardware
+	(declare (salience 9990))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(gusta hardware ?res)
+	(asignatura ?asig)
+
+	(test (eq ?res me_encanta))
+
+	(test (eq ?asig TOC) )
+	=>
+	(assert
+		(recomendar ?asig porque_gusta_hardware por_pregunta_respondida)
+	)
+
+)
+
+(defrule recomendar_obligatorias_hardware
+	(declare (salience 9500))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(gusta hardware ?res)
+	(asignatura ?asig)
+
+	(test (eq ?res me_encanta))
+
+	(test (or (eq ?asig EC) (eq ?asig AC)))
+	=>
+	(assert
+		(recomendar ?asig porque_gusta_hardware por_pregunta_respondida)
+	)
+
+)
+
+
+(defrule recomendar_basicas_programacion
+	(declare (salience 9990))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(gusta programar ?res)
+	(asignatura ?asig)
+
+	(test (eq ?res me_encanta))
+
+	(test (or (eq ?asig FP) (or (eq ?asig MP) (eq ?asig FS))))
+	=>
+	(assert
+		(recomendar ?asig porque_gusta_hardware por_pregunta_respondida)
+	)
+
+)
+
+
+(defrule recomendar_obligatorias_programacion
+	(declare (salience 9590))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(gusta programar ?res)
+	(asignatura ?asig)
+
+	(test (eq ?res me_encanta))
+
+	(test (or (eq ?asig ED) (or (eq ?asig PDOO) (eq ?asig SCD))))
+	=>
+	(assert
+		(recomendar ?asig porque_gusta_hardware por_pregunta_respondida)
+	)
+
+)
+
+
+
+
+
 
 (defrule retirar_por_defecto
 	(declare (salience 9999))
