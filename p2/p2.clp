@@ -702,7 +702,7 @@
 	)
 	(modulo rama)
 	=>
-	(printout t "Pntuacion " ?val_r1 crlf)
+	;(printout t "Pntuacion " ?val_r1 crlf)
 	(assert (consejo is Antonio))
 )
 
@@ -1212,7 +1212,7 @@
 	(gusta programar ?res)
 	(asignatura ?asig)
 
-	(test (eq ?res me_encanta))
+	(test (or (eq ?res me_encanta) (eq ?res lo_soporto) ))
 
 	(test (or (eq ?asig FP) (or (eq ?asig MP) (eq ?asig FS))))
 	=>
@@ -1230,7 +1230,7 @@
 	(gusta programar ?res)
 	(asignatura ?asig)
 
-	(test (eq ?res me_encanta))
+	(test (or (eq ?res me_encanta) (eq ?res lo_soporto) ))
 
 	(test (or (eq ?asig ED) (or (eq ?asig PDOO) (eq ?asig SCD))))
 	=>
@@ -1240,8 +1240,60 @@
 
 )
 
+(defrule recomendar_nota
+	(declare (salience 9590))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(nota ?res)
+	(asignatura ?asig)
+
+	(test (or (eq ?res alta) (eq ?res media)))
+
+	(test (or (eq ?asig ALG) (or (eq ?asig SO) (eq ?asig FFT))))
+	=>
+	(assert
+		(recomendar ?asig porque_tiene_nota_alta por_pregunta_respondida)
+	)
+
+)
 
 
+
+
+(defrule recomendar_trabajo_empresa
+	(declare (salience 9590))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(trabajaria_en ?res)
+	(asignatura ?asig)
+
+	(test (or (eq ?res empresa_privada) (eq ?res empresa_publica)))
+
+	(test (or (eq ?asig FIS) (eq ?asig IES)))
+	=>
+	(assert
+		(recomendar ?asig porque_quiere_trabajar_empresa por_pregunta_respondida)
+	)
+
+)
+
+
+(defrule recomendar_investigacion
+	(declare (salience 9590))
+	(modulo asignaturas)
+	(modulo preguntas_usuario)
+	(trabajaria_en ?res)
+	(asignatura ?asig)
+
+	(test (or (eq ?res investigacion) (eq ?res docencia)))
+
+	(test (or (eq ?asig IA) (eq ?asig FBD)))
+	=>
+	(assert
+		(recomendar ?asig porque_quiere_trabajar_investigacion_y_docencia por_pregunta_respondida)
+	)
+
+)
 
 
 
