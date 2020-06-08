@@ -1,18 +1,19 @@
+; Antonio David Villegas Yeguas
+
 ;Así, la práctica consiste en crear un programa en CLIPS que:
 ;Le pregunte al usuario que pide asesoramiento lo que le preguntaría el compañero que hace de experto.
 ;Realice los razonamientos que haría el compañero que hace de experto
 ;Le aconseje la rama o las ramas que le aconsejaría el compañero junto con los motivos por los que se lo aconsejaría.
 
 
+; las ramas serán csi, ic, si, it y is
+
 ;Para representar las ramas utilizaremos los siguientes hechos:
 
-;(deffacts Ramas
-;(Rama Computacion_y_Sistemas_Inteligentes)
-;(Rama Ingenieria_del_Software)
-;(Rama Ingenieria_de_Computadores)
-;(Rama Sistemas_de_Informacion)
-;(Rama Tecnologias_de_la_Informacion)
-;)
+;(recomendacion <rama> puntuacion)
+
+; donde la puntuacion será una discretización de las preguntas que haremos al usuario
+; acorde a como el experto interpreta la importancia de un campo sobre las distintas ramas 
 
 ;Para representar que el sistema aconseja elegir una rama <nombre de la rama> por el motivo “<texto del motivo>” utilizaremos el hecho
 
@@ -28,9 +29,8 @@
 ;Siguiendo el ejemplo anterior, si el experto pregunta por la nota media como número y después la califica como Alta,Media o Baja, el sistema debe preguntar por la calificación numérica y después deducir si es alta, media o baja.
 
 
-
+; puntuaciones de cada pregunta para cada rama
 (deffacts puntuaciones_CSI
-	; puntuacion_csies para cada pregunta
 	(puntuacion csi gusta_matematicas me_encanta 120)
 	(puntuacion csi gusta_matematicas lo_soporto 30)
 	(puntuacion csi gusta_matematicas lo_odio -100)
@@ -201,6 +201,7 @@
 
 
 
+; inicio del programa, donde ponemos las recomendaciones a 0
 (defrule inicio
 	(declare (salience 9999))
 	(not (comienzo))
@@ -218,6 +219,7 @@
 
 
 ; preguntas para obtener el conocimiento
+; si no he aconsejado o respondido todo y si no he preguntado ya esto
 (defrule preguntar_mates
 	(declare (salience -9990))
 	(not (ya_he_aconsejado))
@@ -283,6 +285,11 @@
 
 
 
+
+
+
+
+
 ; comprobacion de las entradas
 (defrule comprobar_entrada_gusta
 	(declare (salience 9999))
@@ -338,6 +345,11 @@
 	=>
 	(assert (ha_respondido_todo))
 )
+
+
+
+
+
 
 
 (defrule puntuar_mates
