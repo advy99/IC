@@ -283,4 +283,19 @@ El experto también me comento que tanto en la recomendación de rama y de asign
 
 \section{Manual de uso del sistema.}
 
+Para utilizar el sistema basta con cargar el fichero \texttt{p2.clp} adjunto en la entrega y realizar un reset y run en CLIPS.
+
+\begin{lstlisting}
+(load p2.clp)
+(reset)
+(run)
+\end{lstlisting}
+
+Tras esto el sistema mostrará un menú en el que debemos seleccionar si queremos que se nos recomiende una rama o asignaturas. Si escogemos rama se nos preguntará distintas cuestiones y nos recomendará una rama. También es posible que nos responda con información parcial. Ya hemos visto su funcionamiento en la figura \ref{rama}.
+
+
+En el caso de seleccionar la recomendación de asignaturas, nos preguntará que asignaturas tenemos como candidatas y tenemos que responder con asignaturas que estén en la lista dada. Una vez escojamos asignaturas se nos preguntará el número de créditos que queremos que se nos recomiende, y este número ha de ser múltiplo de 6, al ser todas las asignaturas de 6 créditos. Tras esto pasará a realizarnos preguntas con las que razonará que asignaturas son más recomendadas, y en todo momento podemos pedir que se nos haga la recomendación, aunque tenga menos información. Este caso lo hemos visto en la figura \ref{ej_asig}.
+
+
+
 \end{document}
