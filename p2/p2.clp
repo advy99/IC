@@ -856,10 +856,12 @@
 	(asig ALG segundo segundo_cuatrimestre)
 )
 
+; iniciamos la base de conocimiento para preguntar por las asignaturas
 (defrule ini_asignaturas
 	(modulo asignaturas)
 	=>
 	(assert
+		; comenzamos preguntando las asignaturas candidatas
 		(modulo preguntar_asignaturas)
 		(seguir_preguntando)
 		(max_creditos 0)
@@ -870,6 +872,7 @@
 
 )
 
+; regla para que el usuario introduzca asignaturas
 (defrule preguntar_asig
 	(declare (salience 9997))
 	?x <- (modulo preguntar_asignaturas)
@@ -880,6 +883,7 @@
 	(bind ?asig (read))
 	(retract ?f)
 	(if (eq ?asig fin)
+		; acabamos de preguntar asignaturas, pasamos a contar cuantos creditos corresponden las asignaturas seleccionadas
 	 	then (assert
 	 			(modulo contar_max_creditos)
 	 		  )
@@ -894,6 +898,7 @@
 
 )
 
+; comprobamos que la asignatura dada está en la lista
 (defrule comprobar_entrada_asignatura
 	(declare (salience 9999))
 	(modulo preguntar_asignaturas)
@@ -931,6 +936,7 @@
 
 )
 
+; para mostrar en pantalla que asignaturas están seleccionadas
 (defrule asignaturas_escogidas
 	(declare (salience 9998))
 	(modulo preguntar_asignaturas)
@@ -946,7 +952,8 @@
 
 
 
-
+; para contar el número de creditos seleccionados, es decir, el total
+; de las asignaturas seleccionadas, no el número de creditos a recomendar
 (defrule contar_max
 	(declare (salience 9999))
 	(modulo asignaturas)
@@ -962,7 +969,7 @@
 	)
 )
 
-
+; acabamos de contar, pasamos a preguntar cuantos creditos hay que recomendar
 (defrule fin_contar
 	(modulo asignaturas)
 	?x <- (modulo contar_max_creditos)
@@ -978,7 +985,7 @@
 
 
 
-
+; preguntamos cuantos creditos hay que recomendar
 (defrule pregunta_numero_creditos
 	(declare (salience 9990))
 	(not (creditos_asignar ?val))
@@ -990,6 +997,8 @@
 	(assert (creditos_asignar (read)))
 )
 
+; comprobamos que el número incroducido es mayor que cero y menor o igual al total de asignaturas seleciconadas
+; si nos dan 3 asignaturas no podemos recomendar 4
 (defrule comprobar_num_creditos
 	(declare (salience 9980))
 	(modulo asignaturas)
@@ -998,8 +1007,9 @@
 	(max_creditos ?max)
 	=>
 	; tenemos 20 asignaturas, 120 créditos
-	(if (and (> ?val 0) (<= ?val 120) )
+	(if (and (> ?val 0) (<= ?val ?max) )
 		then (assert
+				; pasamos a comprobar que el valor introducido es múltiplo de 6
 				 (comprobar_multiplo_6 ?val)
 				)
 		else
@@ -1009,7 +1019,8 @@
 
 )
 
-
+; comprobar que el numero de creditos a recomendar es multiplo de 6
+; cada asignatura son 6 creditos, no podemos recomendar 9 creditos, ¿asignatura y media? no tiene sentido
 (defrule comprobar_num_creditos_multiplo_6
 	(declare (salience 9999))
 	(modulo asignaturas)
@@ -1129,6 +1140,7 @@
 
 )
 
+; acabamos las recomendacions por defecto, pasamos a las preguntas
 (defrule pasar_preguntar
 	(declare (salience 9999))
 	(modulo asignaturas)
@@ -1151,7 +1163,8 @@
 
 
 
-
+; una vez tenemos respuestas, recomendamos segun el conocimiento del experto
+; recomendamos las de matematicas solo si le gusta mucho las mátematicas
 (defrule recomendar_basicas_matematicas
 	(declare (salience 9990))
 	(modulo asignaturas)
@@ -1170,6 +1183,8 @@
 )
 
 
+; recomendamos las de hardware si le gusta mucho el hardware. En esta regla solo recomendamos
+; las básicas, para dar prioridad sobre las obligatorias
 (defrule recomendar_basicas_hardware
 	(declare (salience 9990))
 	(modulo asignaturas)
@@ -1187,6 +1202,8 @@
 
 )
 
+
+; recomendamos las obligatorias de hardware, con menos prioridad que recomendar las básicas para que tengan preferencia
 (defrule recomendar_obligatorias_hardware
 	(declare (salience 9500))
 	(modulo asignaturas)
@@ -1205,6 +1222,7 @@
 )
 
 
+; recomendamos las de programacion si le gusta programar, si lo odia no
 (defrule recomendar_basicas_programacion
 	(declare (salience 9990))
 	(modulo asignaturas)
@@ -1222,7 +1240,7 @@
 
 )
 
-
+; al igual que con hardware, damos prioridad a las básicas y aqui recomendamos las obligatorias
 (defrule recomendar_obligatorias_programacion
 	(declare (salience 9590))
 	(modulo asignaturas)
@@ -1240,6 +1258,7 @@
 
 )
 
+; recomendaciones segun la nota, basicamente recomendamos las mas dificiles si la nota es alta
 (defrule recomendar_nota
 	(declare (salience 9590))
 	(modulo asignaturas)
@@ -1260,6 +1279,7 @@
 
 
 
+; recomendaciones por trabajo, si quiere trabajar en una empresa, le recomendamos las de proyectos y gestion financiera
 (defrule recomendar_trabajo_empresa
 	(declare (salience 9590))
 	(modulo asignaturas)
@@ -1277,7 +1297,7 @@
 
 )
 
-
+; recomendacion si quiere investigar, las asignaturas ligadas a docencia e investigacion
 (defrule recomendar_investigacion
 	(declare (salience 9590))
 	(modulo asignaturas)
@@ -1296,7 +1316,7 @@
 )
 
 
-
+; retirar recomendaciones por defecto, ya que tenemos respuestas del usuario
 (defrule retirar_por_defecto
 	(declare (salience 9999))
 	(modulo asignaturas)
@@ -1316,7 +1336,7 @@
 
 )
 
-
+; cuando tenemos suficientes recomendaciones, paramos y las mostramos
 (defrule tengo_suficientes_recomendaciones
 	(declare (salience 9997))
 	(modulo asignaturas)
@@ -1332,6 +1352,8 @@
 
 )
 
+
+; cambiamos de modulo para mostrar las recomendaciones
 (defrule pasar_mostrar_recomendacion_asig
 	(declare (salience 9998))
 	(modulo asignaturas)
@@ -1347,6 +1369,7 @@
 
 
 
+; pasamos a recomendar, primero las que tenemos certeza
 (defrule dime_recomendacion_asignaturas_respondidas
 	(declare (salience 9999))
 	(modulo asignaturas)
@@ -1365,6 +1388,8 @@
 )
 
 
+; luego mostramos las recomendaciones por defecto, por si no hemos obtenido suficiente conocimiento.
+; esto solo en el caso de que queden creditos por recomendar.
 (defrule dime_recomendacion_asignaturas_por_defecto
 	(declare (salience 9990))
 	(modulo asignaturas)
