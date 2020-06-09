@@ -196,16 +196,42 @@ Para este segundo apartado he decidido utilizar razonamiento por defecto, luego 
 	\centering
 	\includegraphics[scale=0.4]{ej_asig.png}
 	\caption{Ejecución del sistema para recomendar asignaturas.}
-	\label{rama}
+	\label{ej_asig}
 \end{figure}
+
+Como podemos ver, al ejecutar el usuario sabe porque le recomendamos una asignatura, así como si la recomendación es por razonamiento por defecto y además puede solicitar en cualquier momento que se le haga la recomendación, aunque no responda todas las preguntas. 
+
+\newpage
 
 \section{Descripción del proceso seguido.}
 
+En esta sección describiré el proceso seguido para desarrollar la base de conocimiento, la validación y la verificación del sistema a implementar en la práctica.
+
 \subsection{Desarrollo de la base de conocimiento.}
+
+Para el desarrollo de la base de conocimiento he tenido en cuenta la entrevista realizada en teoría como ejercicio y además información obtenida de la secretaría de la ETSIIT. Tras tener toda esta información la llevado a nuestro sistema usando CLIPS.
+
+En esta práctica la base de conocimiento ha de tener información sobre las distintas asignaturas, así como si son de formación básica u obligatoria.
+
+También tendremos en cuenta la rama de conocimiento y recomendaciones antes de cursar para realizar las recomendaciones, como por ejemplo si requieren una base matemática, de programación o de conocimientos de hardware.
+
+Este conocimiento se ha implementado en el sistema como podemos ver en el código adjunto a esta memoria y también lo comentaré más adelante en la descripción del sistema.
 
 \subsection{Validación y verificación del sistema.}
 
+Construcción correcta
 
+Es coherente
+
+Participación del experto para comprobar si el conocimiento es valido y suficiente
+
+Es consistente, preciso y completo
+
+No hay duplicacion ni ciclos disparables, asi como ciclos de reglas (no intencionados)
+
+no hay reglas redundantes, ni reglas con conclusiones contradictorias
+
+Validacion con reuniones, mediante casos test, analisis de sensibilidad y validacion de subsistemas 
 
 \section{Descripción del sistema.}
 
