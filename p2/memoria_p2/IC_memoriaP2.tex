@@ -340,9 +340,22 @@ Existen dos grandes módulos. Cada uno de estos marcará si estamos recomendando
 
 A su vez, una vez estemos dentro de cada uno de estos dos módulos usaremos otros módulos para realizar acciones más concretas.
 
-\subsubsection{Estructura de los módulos.}
+\subsubsection{Estructura de los módulos y objetivo de cada módulos.}
 
-\subsubsection{Objetivo de cada módulo.}
+Como he comentado, el sistema usará dos módulos para marcar que tipo de recomendación está realizando y dentro de cada módulo tendrá distintos módulos que realizarán tareas concretas.
+
+En la parte de la primera práctica, como he comentado, no existen módulos más allá del módulo rama añadido en esta práctica ya que al desarrollar la práctica 1 no contaba con el conocimiento de uso de módulos, sin embargo lo he adaptado para que al menos esté separado por este módulo rama. Para simular el comportamiento de módulos se usaron hechos de control para saber en todo momento que parte de la base de conocimiento gestionaba en cada regla.
+
+Dentro del módulo asignaturas se han utilizado los siguientes módulos, cada uno con un objetivo concreto:
+
+\begin{itemize}
+	\item  preguntar\_asignaturas: Preguntar al usuario las asignaturas que quiere que se le recomienden.
+	\item contar\_max\_creditos: Una vez tenemos las asignaturas este módulo se encargará de inferir cuantos créditos en total ha seleccionado el usuario, para hacer que la recomendación solo pueda estar entre 6 y ese número de créditos, evitando que el usuario solo nos de un número de asignaturas N y nos pida que le recomendemos un número M mayor que N de asignaturas.
+	\item preguntar\_creditos: Preguntar al usuario el número de créditos que quiere que se le recomienden.
+	\item recomendar\_defecto: Realizar las recomendaciones de asignaturas por defecto.
+	\item preguntas\_usuario: Realizar las preguntas al usuario para obtener información para la base de conocimiento y realizar las recomendaciones con esa información.
+	\item mostrar\_recomendaciones: Una vez se tienen las recomendaciones, mostrarlas al usuario.
+\end{itemize}
 
 
 \subsection{Hechos y reglas de cada módulo.}
