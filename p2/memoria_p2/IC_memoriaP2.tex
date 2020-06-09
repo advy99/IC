@@ -320,9 +320,25 @@ En el caso de las asignaturas son:
 
 En este caso, al tener distintas asignaturas tendremos estos hechos para representar las que recomendamos, en las que vemos que contiene la asignatura, el motivo de la recomendación y si la recomendación se ha razonado defecto o porque se ha razonado tras información dada de un usuario.
 
-\subsection{Conocimiento global del sistema.}
+%\subsection{Conocimiento global del sistema.}
 
 \subsection{Módulos desarrollados.}
+
+En esta práctica se han añadido módulos para controlar el funcionamiento del sistema.
+
+En la parte de recomendación de rama desarrollada en la práctica 1 no se tenía el conocimiento del uso de módulos ya que vimos su funcionamiento en teoría tras su entrega, aun así se ha adaptado para que funcione también con módulos, aunque no tan en profundidad como la recomendación de asignaturas, que al estar hecha desde cero si se ha implementado correctamente el uso de módulos.
+
+Los módulos los representaremos al igual que hemos visto a lo largo de la asignatura:
+
+\begin{lstlisting}
+(modulo <nombre_modulo>)
+\end{lstlisting}
+
+Para entrar en un módulo realizaremos un assert a este hecho, y para salir lo retiraremos de la base de conocimiento.
+
+Existen dos grandes módulos. Cada uno de estos marcará si estamos recomendando una rama o asignaturas, y entraremos en este módulo al inicio del sistema, justo después de que el usuario nos de la información del tipo de recomendación a realizar por parte del sistema.
+
+A su vez, una vez estemos dentro de cada uno de estos dos módulos usaremos otros módulos para realizar acciones más concretas.
 
 \subsubsection{Estructura de los módulos.}
 
