@@ -219,19 +219,49 @@ Este conocimiento se ha implementado en el sistema como podemos ver en el códig
 
 \subsection{Validación y verificación del sistema.}
 
-Construcción correcta
+Para la verificación y validación de un sistema se han de seguir los siguientes pasos:
 
-Es coherente
+\begin{itemize}
+	\item Verificar si el sistema es completo, preciso y consistente.
+	\item Evaluar si el sistema cumple especificaciones del modelo de diseño.
+	\item Diseñar un plan de validación aplicando metodologías apropiadas.
+	\item Valorar en función de criterios de validación. Entre otros los requisitos funcionales definidos en la fase de identificación del problema.
+\end{itemize}
 
-Participación del experto para comprobar si el conocimiento es valido y suficiente
+\subsubsection{Verificación del sistema.}
 
-Es consistente, preciso y completo
+Para verificar si el sistema es completo, preciso y consistente se siguen los siguientes pasos:
 
-No hay duplicacion ni ciclos disparables, asi como ciclos de reglas (no intencionados)
+\begin{itemize}
+	\item Construir el sistema correctamente.
+	\item Descubrir y corregir errores en el SBC. En esta fase se analiza si es coherente, no válido.
+	\item La verificación la realiza el ingeniero del conocimiento.
+	\item Se ha de valorar que no hay conclusiones incoherentes, que las conclusiones son precisas y que no hay lagunas en la capacidad deductiva, es decir, es completo, el sistema siempre responde.
+\end{itemize}
 
-no hay reglas redundantes, ni reglas con conclusiones contradictorias
+Como hemos visto la verificación del sistema la llevamos a cabo nosotros como ingenieros del conocimiento. En mi caso he comprobado que en la ejecución del sistema este siempre responde, aunque el usuario introduzca valores erróneos, o intente alguna opción compleja. 
 
-Validacion con reuniones, mediante casos test, analisis de sensibilidad y validacion de subsistemas 
+En este análisis he comprobado que sea coherente, no válido, ya que como ingeniero del conocimiento he podido comprobar que obtengo respuestas por parte del sistema, que este no falla ni se queda colgado, sin embargo no soy capaz de saber si las respuestas dadas son las correctas acorde con el conocimiento del sistema ni si está razonando bien, esto último sería el proceso de validación, que pasaré a explicar en el siguiente punto.
+
+\subsubsection{Validación del sistema.}
+
+La validación no la realiza el ingeniero del conocimiento, si no que este utiliza al experto para comprobar que el sistema es correcto.
+
+La validación comprobará los siguientes aspectos:
+
+\begin{itemize}
+	\item La comunicación con otros sistemas (transferencias) es adecuada.
+	\item La interfaz es comprensible para el usuario.
+	\item La explicación del razonamiento del sistema es suficiente.
+	\item Cumple los requisitos de ejecución en tiempo real pedidos.
+	\item Satisfacción y utilidad de los resultados finales e intermedios comparados con resultados conocidos, prestaciones de un experto u otros métodos.
+\end{itemize}
+
+
+Para comprobar todos estos aspectos he contactado con la persona que tomo el papel de experto en el ejercicio realizado en teoría y los resultados han sido positivos, ya que este considera que el sistema es fácil de usar y comprensible para el usuario porque en cada interacción el sistema especifica las posibles entradas, y aun así si existe algún error el sistema te avisa y es capaz de responder avisando al usuario y volviendo a realizar la pregunta.
+
+El experto también me comento que tanto en la recomendación de rama y de asignaturas se realiza correctamente las explicaciones del razonamiento una vez ha dado respuesta y que tras varias pruebas con distintos casos que el conocía la respuestas son correctas.
+
 
 \section{Descripción del sistema.}
 
