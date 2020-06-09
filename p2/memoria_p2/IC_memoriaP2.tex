@@ -263,11 +263,37 @@ Para comprobar todos estos aspectos he contactado con la persona que tomo el pap
 El experto también me comento que tanto en la recomendación de rama y de asignaturas se realiza correctamente las explicaciones del razonamiento una vez ha dado respuesta y que tras varias pruebas con distintos casos que el conocía la respuestas son correctas.
 
 
+\newpage
+
 \section{Descripción del sistema.}
+
+En este apartado explicaremos en profundidad el desarrollo del sistema, así como su estructura y explicación de la base de conocimiento.
 
 \subsection{Variables de entrada del problema.}
 
+Las variables de entrada del problema son la información que introduce el usuario a la base de conocimiento.
+
 \subsection{Variables de salida del problema.}
+
+Las variables de salida del problema serán las recomendaciones que realice el sistema, ya sea la recomendación de una rama o la recomendación de asignaturas.
+
+Los hechos que representan las recomendaciones en el caso de la rama son:
+
+\begin{lstlisting}
+(consejo ?rama ?apodo_experto)
+(motivos ?motivos)
+\end{lstlisting}
+
+En el que el primer hecho representa la rama que finalmente aconseja el sistema y el segundo los motivos con los que ha razonado el sistema, basándose en las respuestas del usuario y la base de conocimiento.
+
+
+En el caso de las asignaturas son:
+
+\begin{lstlisting}
+(recomendar ?asig ?recomendacion por_pregunta_respondida|por_defecto)
+\end{lstlisting}
+
+En este caso, al tener distintas asignaturas tendremos estos hechos para representar las que recomendamos, en las que vemos que contiene la asignatura, el motivo de la recomendación y si la recomendación se ha razonado defecto o porque se ha razonado tras información dada de un usuario.
 
 \subsection{Conocimiento global del sistema.}
 
@@ -280,6 +306,8 @@ El experto también me comento que tanto en la recomendación de rama y de asign
 
 \subsection{Hechos y reglas de cada módulo.}
 
+
+\newpage
 
 \section{Manual de uso del sistema.}
 
