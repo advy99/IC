@@ -360,6 +360,109 @@ Dentro del módulo asignaturas se han utilizado los siguientes módulos, cada un
 
 \subsection{Hechos y reglas de cada módulo.}
 
+\subsubsection*{preguntar\_asignaturas:}
+
+Este módulo tendrá tres reglas, preguntar\_asig, que se encargará de que el usuario introduzca las posibles asignaturas, comprobar\_entrada\_asignatura, que comprobará que el usuario ha introducido un valor correcto y asignaturas\_escogidas, que mostrará por pantalla las asignaturas ya escogidas para que el usuario sepa cuales ha introducido.
+
+Utilizará los siguientes hechos, además de otros vistos anteriormente:
+
+\begin{lstlisting}
+;para representar el modulo actual
+(modulo preguntar_asignaturas)
+
+; para representar que el usuario escoge una asignatura
+(asignatura ?Asig)
+
+; para saber que el usuario quiere seguir introduciendo asignaturas
+(seguir_preguntando)
+\end{lstlisting}
+
+
+\subsubsection*{contar\_max\_creditos:}
+
+Este módulo contará el número de créditos de todas las asignaturas seleccionadas por el usuario, para saber que como mucho la recomendación podrá ser de este número de créditos.
+
+Usará los siguientes hechos, además de otros vistos anteriormente:
+\begin{lstlisting}
+; para representar el modulo actual
+(modulo contar_max_creditos)
+
+; para representar el número máximo de créditos
+(max_creditos ?num)
+
+; para representar que ya ha contado cierta asignatura en el máximo de créditos.
+(contado ?asig)
+\end{lstlisting}
+
+
+
+\subsubsection*{preguntar\_creditos:}
+
+Este modulo cuenta con tres hechos, uno que preguntará al usuario el número de créditos, otro que comprobará si el número introducido está en el rango correcto y otro que comprobará que el número introducido es múltiplo de seis.
+
+Usará los siguientes hechos, además de otros vistos anteriormente:
+\begin{lstlisting}
+; para representar el modulo actual
+(modulo preguntar_creditos)
+
+; hecho que almacenará lo introducido por el usuario
+(creditos_asignar ?val)
+
+; para comprobar si un valor es múltiplo de 6
+(comprobar_multiplo_6 ?val)
+\end{lstlisting}
+
+
+\subsubsection*{recomendar\_defecto:}
+
+Este módulo tendrá cuatro reglas, dando prioridad a las recomendaciones. Una regla para recomendar primero las asignaturas básicas, otra para recomendar las asignaturas obligatorias que no dependen de básicas o son más independientes, otra para recomendar por defecto el resto y una última, una vez hechas tantas recomendaciones por defecto como créditos a recomendar, para pasar a preguntar al usuario. Se ha hecho así para dar más prioridad a recomendar asignaturas básicas, como nos sugirió el experto.
+
+Usará los siguientes hechos, además de otros vistos anteriormente:
+\begin{lstlisting}
+; para representar el modulo actual
+(modulo recomendar_defecto)
+
+; para represetnar una recomendación
+(recomendar ?asig ?motivos por_defecto)
+
+; para representar el número de creditos recomendados por defecto
+(creditos_recomendados defecto ?val)
+\end{lstlisting}
+
+
+
+\subsubsection*{preguntas\_usuario:}
+
+Este módulo tendrá todas las reglas de las distintas preguntas al usuario, utilizará las mismas preguntas que en el caso de la recomendación de rama, luego no volveré a explicar los hechos usados para las preguntas. También tendrá reglas para añadir recomendaciones por las respuestas realizadas, así como una regla para retirar recomendaciones hechas por defecto ya que se ha hecho una recomendación por una respuesta dada.
+
+Usará los siguientes hechos, además de otros vistos anteriormente:
+\begin{lstlisting}
+; para representar el modulo actual
+(modulo preguntas_usuario)
+
+; para represetnar una recomendación
+(recomendar ?asig ?motivos por_pregunta_respondida)
+
+; para representar el número de creditos recomendados por defecto
+(creditos_recomendados respuestas ?val)
+\end{lstlisting}
+
+
+
+\subsubsection*{mostrar\_recomendaciones:}
+
+Este último módulo simplemente mostrará las recomendaciones hechas, si tiene suficientes, las inferidas por la información dada por el usuario, si no por las recomendaciones por defecto. Las he separado en dos reglas para dar prioridad a las recomendaciones que no son por defecto.
+
+ 
+Usará los siguientes hechos, además de otros vistos anteriormente:
+\begin{lstlisting}
+; para representar el modulo actual
+(modulo mostrar_recomendaciones)
+\end{lstlisting}
+
+Usará tan pocos hechos ya que se basan en hechos usados anteriormente.
+
+
 
 \newpage
 
