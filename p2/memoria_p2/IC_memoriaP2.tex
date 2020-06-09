@@ -273,6 +273,31 @@ En este apartado explicaremos en profundidad el desarrollo del sistema, así com
 
 Las variables de entrada del problema son la información que introduce el usuario a la base de conocimiento.
 
+Al inicio el usuario ha de introducir que tipo de recomendación quiere, si quiere que se le recomienden ramas o asignaturas.
+
+Una vez introduce ese conocimiento en la base de conocimiento el sistema le pide información acorde a este nuevo conocimiento.
+
+En el caso de la recomendación de rama, el usuario introduce los siguientes hechos:
+
+\begin{lstlisting}
+(gusta ?cosa ?valor)
+(trabajaria_en ?campo)
+(es_trabajador ?valor)
+\end{lstlisting}
+
+Con el que representaremos que cosas le gustan o disgustan, en que campo trabajaría o si el usuario es trabajador.
+
+Para la recomendación de asignaturas es necesaria más información, ya que el sistema ha de conocer sobre que asignaturas ha de hacer la recomendación, así como el número de créditos ha recomendar.
+
+Utilizaremos los mismos hechos para representar los gustos del usuario, pero además utilizaremos los siguientes hechos para representar las asignaturas seleccionadas por el usuario, así como los créditos que quiere que le sean recomendados:
+
+\begin{lstlisting}
+(asignatura ?asig)
+(creditos_asignar ?cred)
+\end{lstlisting}
+
+
+\newpage
 \subsection{Variables de salida del problema.}
 
 Las variables de salida del problema serán las recomendaciones que realice el sistema, ya sea la recomendación de una rama o la recomendación de asignaturas.
